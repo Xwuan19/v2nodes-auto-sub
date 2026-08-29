@@ -1,0 +1,26 @@
+# Quá Trình Cập Nhật Dự Án (Handover)
+
+Dự án này được phát triển để tạo ra một công cụ lấy cấu hình (nodes/proxies) tự động từ trang web \`v2nodes.com\`, vượt qua các giới hạn cập nhật thủ công và bảo mật của trang gốc. Dưới đây là tiến trình phát triển và các quyết định kỹ thuật đã được đưa ra:
+
+## Phiên bản 1: Lấy Node Cụ Thể (Mỹ - US)
+*   **Mục tiêu:** Tự động lấy cấu hình node miễn phí mới nhất của Mỹ.
+*   **Vấn đề gặp phải:** Link subscription của v2nodes thường xuyên thay đổi tham số \`key=\` để ép người dùng truy cập web.
+*   **Giải pháp:** Sử dụng Cloudflare Worker truy cập vào trang \`/country/us/\`, quét mã nguồn (Regex) để tìm link \`data-config\` chứa \`key\` mới nhất, fetch data và trả về.
+
+## Phiên bản 2: Tự Động Lấy Sub Tổng Hợp
+*   **Mục tiêu:** Mở rộng ra toàn bộ các quốc gia.
+*   **Giải pháp:** Sửa điểm neo từ \`/country/us/\` sang trang chủ \`/\`, bóc tách link sub tổng (\`/subscriptions/country/all/\`). Giao việc lọc quốc gia lại cho Shadowrocket/Client.
+
+## Phiên bản 3: Thử Nghiệm "Siêu Cào" (Thất bại / Hủy bỏ)
+*   **Mục tiêu:** Sub tổng của v2nodes cố tình giới hạn chỉ khoảng 25-26 configs và ẩn đi các node mới nhất (vừa ra mắt 30s trước). Khách hàng muốn cào toàn bộ 64 trang hoặc ít nhất là 20 trang đầu để lấy hàng trăm node siêu tươi.
+*   **Giải pháp thử nghiệm:** Viết code sử dụng \`Promise.all\` truy cập đồng loạt vào trang danh sách và từng trang server chi tiết để bóc tách \`vless://\`, \`vmess://\`...
+*   **Vấn đề gặp phải:** Cloudflare Workers có giới hạn 50 subrequests. Khi giảm xuống cào 5-10 trang, request vẫn bị **Timeout** trên Shadowrocket. Nguyên nhân do v2nodes sử dụng Cloudflare WAF (chống DDoS), chặn các luồng request đồng loạt từ máy chủ bot.
+
+## Phiên bản 4 (Current): Giao Diện Tùy Chọn Đa Quốc Gia (Web UI + API)
+*   **Mục tiêu:** Giải quyết triệt để lỗi timeout, đáp ứng nhu cầu chọn node mới nhất theo **từng quốc gia cụ thể** mà không bị giới hạn ở một file sub tổng thập cẩm.
+*   **Giải pháp:**
+    1.  Biến Cloudflare Worker thành một Web App nhỏ.
+    2.  Khi truy cập \`/\`, trả về giao diện HTML có chứa Dropdown list gồm 54 quốc gia (bóc tách sẵn danh sách mã code từ v2nodes).
+    3.  Người dùng chọn quốc gia, web tự render link dạng \`/sub?country=sg\`.
+    4.  Khi Shadowrocket gọi vào \`/sub?country=sg\`, Worker sẽ fetch đúng 1 request tới \`/country/sg/\` để chộp lấy \`key\` sub mới nhất của nước đó, tải về và trả file RAW ngay lập tức.
+*   **Kết quả:** Hệ thống chạy mượt mà dưới 1 giây, hoàn toàn "tàng hình" trước WAF chống DDoS, và người dùng có toàn quyền kiểm soát quốc gia muốn lấy thông qua UI chuyên nghiệp.
