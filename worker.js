@@ -201,7 +201,7 @@ body{
 .cs-panel.show{display:block}
 
 /* Search */
-.cs-search-wrap{padding:10px 10px 6px}
+.cs-search-wrap{padding:6px 6px 0}
 .cs-search{
   width:100%;padding:9px 13px;
   background:#0f0f1c; /* Solid dark background */
@@ -213,7 +213,7 @@ body{
 .cs-search:focus{border-color:rgba(10,132,255,.5)}
 
 /* Options list */
-.cs-list{max-height:240px;overflow-y:auto;padding:0 6px 8px}
+.cs-list{max-height:240px;overflow-y:auto;padding:6px}
 .cs-list::-webkit-scrollbar{width:4px}
 .cs-list::-webkit-scrollbar-track{background:transparent}
 .cs-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
