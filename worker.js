@@ -314,7 +314,6 @@ body{
 
     <!-- Proxy Tab -->
     <div id="tab-proxy" class="tc pm">
-      <div class="ib">⚡ &nbsp;Sourced from proxifly — validated every 5 minutes, 100+ countries</div>
       <div class="two-col">
         <div>
           <span class="lbl">Country</span>
@@ -341,11 +340,11 @@ body{
 // ── Country data ──
 const COUNTRIES = ${JSON.stringify(COUNTRIES)};
 const PROTOCOLS = [
-  ["all", "All protocols", false],
-  ["http", "HTTP", false],
-  ["https", "HTTPS", false],
-  ["socks4", "SOCKS4", false],
-  ["socks5", "SOCKS5", false]
+  ["all", "All protocols", "🔌"],
+  ["http", "HTTP", "📄"],
+  ["https", "HTTPS", "🔒"],
+  ["socks4", "SOCKS4", "🧦"],
+  ["socks5", "SOCKS5", "🚀"]
 ];
 
 const FLAG = code => code ? \`https://flagcdn.com/20x15/\${code}.png\` : null;
@@ -354,41 +353,44 @@ const FLAG = code => code ? \`https://flagcdn.com/20x15/\${code}.png\` : null;
 function buildSelect(containerId, optionsList, isProxy, hideSearch = false) {
   const el = document.getElementById(containerId);
   if (!el) return;
-  const opts = optionsList.map(([v, label, flag]) => {
+  const opts = optionsList.map(([v, label, icon]) => {
     const val = isProxy && v !== 'all' ? v.toUpperCase() : v;
-    return { val, label, flag };
+    return { val, label, icon };
   });
 
   let current = opts[0];
   let open = false;
 
-  function flagHtml(flag, label) {
-    if (flag === false) return ''; // No icon for protocol
-    if (!flag) return \`<span class="cs-glob">🌐</span>\`;
-    return \`<img class="cs-flag" src="\${FLAG(flag)}" alt="\${label}" onerror="this.style.visibility='hidden'">\`;
+  function flagHtml(icon, label) {
+    if (!icon) return \`<span class="cs-glob">🌐</span>\`;
+    if (icon.length === 2 && /^[a-z]{2}$/.test(icon)) {
+      return \`<img class="cs-flag" src="\${FLAG(icon)}" alt="\${label}" onerror="this.style.visibility='hidden'">\`;
+    }
+    return \`<span class="cs-glob">\${icon}</span>\`;
   }
 
   function render() {
     el.innerHTML = \`
       <div class="cs-trigger \${open ? 'open' : ''}" onclick="toggleCS(event, '\${containerId}')">
-        \${flagHtml(current.flag, current.label)}
+        \${flagHtml(current.icon, current.label)}
         <span class="cs-label">\${current.label}</span>
         <span class="cs-chevron">\${open ? '▴' : '▾'}</span>
       </div>
       <div class="cs-panel \${open ? 'show' : ''}" id="panel-\${containerId}">
         \${hideSearch ? '' : \`<div class="cs-search-wrap">
-          <input class="cs-search" placeholder="Search country…" oninput="filterCS(event, '\${containerId}')" onclick="event.stopPropagation()">
+          <input class="cs-search" placeholder="Search..." oninput="filterCS(event, '\${containerId}')" onclick="event.stopPropagation()">
         </div>\`}
         <div class="cs-list">
           \${opts.map(o => \`
             <div class="opt \${o.val === current.val ? 'selected' : ''}" data-val="\${o.val}" onclick="selectCS(event, '\${containerId}', '\${o.val}')">
-              \${flagHtml(o.flag, o.label)}
+              \${flagHtml(o.icon, o.label)}
               <span>\${o.label}</span>
             </div>
           \`).join('')}
         </div>
       </div>
     \`;
+    if (typeof twemoji !== 'undefined') twemoji.parse(el);
   }
 
   el._getVal = () => current.val;
@@ -396,10 +398,12 @@ function buildSelect(containerId, optionsList, isProxy, hideSearch = false) {
   el._select = (val) => {
     current = opts.find(o => o.val === val) || opts[0];
     open = false;
+    el.style.zIndex = 'auto';
     render();
   };
   el._toggle = () => {
     open = !open;
+    el.style.zIndex = open ? '200' : 'auto';
     render();
     if (open && !hideSearch) {
       setTimeout(() => el.querySelector('.cs-search')?.focus(), 50);
