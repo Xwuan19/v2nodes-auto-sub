@@ -81,17 +81,8 @@ export default {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Node Matrix</title>
-<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-
-/* Twemoji images inline like text */
-img.emoji {
-  height: 1.1em; width: 1.1em;
-  margin: 0 .06em 0 .06em;
-  vertical-align: -0.15em;
-  display: inline-block;
-}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -185,6 +176,7 @@ body{
 .pm .cs-trigger.open{border-color:rgba(94,92,230,.55);box-shadow:0 0 0 3px rgba(94,92,230,.15)}
 
 .cs-flag{width:20px;height:15px;border-radius:2px;object-fit:cover;flex:0 0 20px;display:block}
+.fluent-3d{width:20px;height:20px;border-radius:0;object-fit:contain;flex:0 0 20px;display:block}
 .cs-glob{font-size:16px;line-height:1;width:20px;flex:0 0 20px;text-align:center;display:flex;justify-content:center;align-items:center;overflow:hidden}
 .cs-label{flex:1;font-size:15px;font-weight:700;color:var(--txt)}
 .cs-chevron{color:var(--txt3);font-size:12px;transition:transform .2s;flex-shrink:0}
@@ -343,12 +335,15 @@ body{
 <script>
 // ── Country data ──
 const COUNTRIES = ${JSON.stringify(COUNTRIES)};
+
+const FLUENT = (folder, file) => \`https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@latest/assets/\${folder}/3D/\${file}_3d.png\`;
+
 const PROTOCOLS = [
-  ["all", "All protocols", "🌐"],
-  ["http", "HTTP", "📄"],
-  ["https", "HTTPS", "🔒"],
-  ["socks4", "SOCKS4", "🧦"],
-  ["socks5", "SOCKS5", "🚀"]
+  ["all", "All protocols", FLUENT("Globe%20with%20meridians", "globe_with_meridians")],
+  ["http", "HTTP", FLUENT("Page%20facing%20up", "page_facing_up")],
+  ["https", "HTTPS", FLUENT("Locked", "locked")],
+  ["socks4", "SOCKS4", FLUENT("Socks", "socks")],
+  ["socks5", "SOCKS5", FLUENT("Rocket", "rocket")]
 ];
 
 const FLAG = code => code ? \`https://flagcdn.com/20x15/\${code}.png\` : null;
@@ -366,7 +361,10 @@ function buildSelect(containerId, optionsList, isProxy, hideSearch = false) {
   let open = false;
 
   function flagHtml(icon, label) {
-    if (!icon) return \`<span class="cs-glob">🌐</span>\`;
+    if (!icon) return \`<img class="cs-flag fluent-3d" src="\${FLUENT('Globe%20with%20meridians', 'globe_with_meridians')}" alt="Global">\`;
+    if (icon.startsWith('http')) {
+      return \`<img class="cs-flag fluent-3d" src="\${icon}" alt="\${label}">\`;
+    }
     if (icon.length === 2 && /^[a-z]{2}$/.test(icon)) {
       return \`<img class="cs-flag" src="\${FLAG(icon)}" alt="\${label}" onerror="this.style.visibility='hidden'">\`;
     }
