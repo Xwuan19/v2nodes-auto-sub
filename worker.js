@@ -81,8 +81,17 @@ export default {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Node Matrix</title>
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* Twemoji images inline like text */
+img.emoji {
+  height: 1.1em; width: 1.1em;
+  margin: 0 .06em 0 .06em;
+  vertical-align: -0.15em;
+  display: inline-block;
+}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -483,6 +492,26 @@ function copyLink(id, btn) {
   btn.textContent = 'Copied!';
   setTimeout(() => btn.textContent = orig, 1500);
 }
+
+// ── Twemoji: replace all emoji on page with Twemoji SVGs ──
+const TW_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/';
+function applyTwemoji(node) {
+  if (typeof twemoji !== 'undefined') {
+    twemoji.parse(node, { folder: 'svg', ext: '.svg', base: TW_BASE });
+  }
+}
+
+// Parse static content immediately
+applyTwemoji(document.body);
+
+// Auto-parse any dynamically added nodes (e.g. dropdown render)
+const _observer = new MutationObserver(mutations => {
+  mutations.forEach(m => m.addedNodes.forEach(n => {
+    if (n.nodeType === 1) applyTwemoji(n);
+  }));
+});
+_observer.observe(document.body, { childList: true, subtree: true });
+
 </script>
 </body>
 </html>`;
