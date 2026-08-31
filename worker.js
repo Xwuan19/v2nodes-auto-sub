@@ -143,6 +143,7 @@ body{
   flex:1;height:44px;border:none;border-radius:14px;background:transparent;
   color:var(--txt2);font-family:inherit;font-size:14px;font-weight:700;
   cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;
+  display:flex;justify-content:center;align-items:center;gap:8px;
 }
 .tab-btn:hover{color:var(--txt);background:rgba(255,255,255,.06)}
 .tab-btn.ac,.tab-btn.ap{
@@ -292,8 +293,12 @@ body{
 
   <div class="card">
     <div class="tabs">
-      <button class="tab-btn ac" id="btn-vpn" onclick="switchTab('vpn',this)">🛰 VPN Sub</button>
-      <button class="tab-btn" id="btn-proxy" onclick="switchTab('proxy',this)">🔌 Proxy List</button>
+      <button class="tab-btn ac" id="btn-vpn" onclick="switchTab('vpn',this)">
+        <img class="fluent-3d" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f6f0.svg" alt="Satellite"> VPN Sub
+      </button>
+      <button class="tab-btn" id="btn-proxy" onclick="switchTab('proxy',this)">
+        <img class="fluent-3d" src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f50c.svg" alt="Plug"> Proxy List
+      </button>
     </div>
 
     <!-- VPN Tab -->
