@@ -185,7 +185,7 @@ body{
 .pm .cs-trigger.open{border-color:rgba(94,92,230,.55);box-shadow:0 0 0 3px rgba(94,92,230,.15)}
 
 .cs-flag{width:20px;height:15px;border-radius:2px;object-fit:cover;flex-shrink:0}
-.cs-glob{font-size:16px;line-height:1;flex-shrink:0}
+.cs-glob{font-size:16px;line-height:1;width:20px;text-align:center;display:inline-block;flex-shrink:0}
 .cs-label{flex:1;font-size:15px;font-weight:700;color:var(--txt)}
 .cs-chevron{color:var(--txt3);font-size:12px;transition:transform .2s;flex-shrink:0}
 .cs-trigger.open .cs-chevron{transform:rotate(180deg)}
