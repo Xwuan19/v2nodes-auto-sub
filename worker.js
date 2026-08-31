@@ -4,37 +4,63 @@ export default {
 
     if (url.pathname === "/") {
       const COUNTRIES_VPN = `
-        <option value="all">🌐 Global — All regions</option>
-        <option value="al">🇦🇱 Albania</option><option value="ar">🇦🇷 Argentina</option>
-        <option value="am">🇦🇲 Armenia</option><option value="au">🇦🇺 Australia</option>
-        <option value="at">🇦🇹 Austria</option><option value="bd">🇧🇩 Bangladesh</option>
-        <option value="by">🇧🇾 Belarus</option><option value="be">🇧🇪 Belgium</option>
-        <option value="br">🇧🇷 Brazil</option><option value="bg">🇧🇬 Bulgaria</option>
-        <option value="ca">🇨🇦 Canada</option><option value="cn">🇨🇳 China</option>
-        <option value="co">🇨🇴 Colombia</option><option value="cz">🇨🇿 Czechia</option>
-        <option value="dk">🇩🇰 Denmark</option><option value="ee">🇪🇪 Estonia</option>
-        <option value="fi">🇫🇮 Finland</option><option value="fr">🇫🇷 France</option>
-        <option value="de">🇩🇪 Germany</option><option value="gr">🇬🇷 Greece</option>
-        <option value="hk">🇭🇰 Hong Kong</option><option value="in">🇮🇳 India</option>
-        <option value="ir">🇮🇷 Iran</option><option value="it">🇮🇹 Italy</option>
-        <option value="jp">🇯🇵 Japan</option><option value="kz">🇰🇿 Kazakhstan</option>
-        <option value="kg">🇰🇬 Kyrgyzstan</option><option value="lv">🇱🇻 Latvia</option>
-        <option value="lt">🇱🇹 Lithuania</option><option value="my">🇲🇾 Malaysia</option>
-        <option value="mx">🇲🇽 Mexico</option><option value="md">🇲🇩 Moldova</option>
-        <option value="nl">🇳🇱 Netherlands</option><option value="no">🇳🇴 Norway</option>
-        <option value="ph">🇵🇭 Philippines</option><option value="pl">🇵🇱 Poland</option>
-        <option value="pt">🇵🇹 Portugal</option><option value="ro">🇷🇴 Romania</option>
-        <option value="ru">🇷🇺 Russia</option><option value="sa">🇸🇦 Saudi Arabia</option>
-        <option value="sg">🇸🇬 Singapore</option><option value="sk">🇸🇰 Slovakia</option>
-        <option value="za">🇿🇦 South Africa</option><option value="kr">🇰🇷 South Korea</option>
-        <option value="es">🇪🇸 Spain</option><option value="se">🇸🇪 Sweden</option>
-        <option value="ch">🇨🇭 Switzerland</option><option value="tw">🇹🇼 Taiwan</option>
-        <option value="tr">🇹🇷 Türkiye</option><option value="th">🇹🇭 Thailand</option>
-        <option value="ua">🇺🇦 Ukraine</option><option value="ae">🇦🇪 UAE</option>
-        <option value="gb">🇬🇧 United Kingdom</option><option value="us">🇺🇸 United States</option>`;
+        <option value="all">🌐  Global — All Regions</option>
+        <option value="al">Albania (AL)</option>
+        <option value="ar">Argentina (AR)</option>
+        <option value="am">Armenia (AM)</option>
+        <option value="au">Australia (AU)</option>
+        <option value="at">Austria (AT)</option>
+        <option value="bd">Bangladesh (BD)</option>
+        <option value="by">Belarus (BY)</option>
+        <option value="be">Belgium (BE)</option>
+        <option value="br">Brazil (BR)</option>
+        <option value="bg">Bulgaria (BG)</option>
+        <option value="ca">Canada (CA)</option>
+        <option value="cn">China (CN)</option>
+        <option value="co">Colombia (CO)</option>
+        <option value="cz">Czechia (CZ)</option>
+        <option value="dk">Denmark (DK)</option>
+        <option value="ee">Estonia (EE)</option>
+        <option value="fi">Finland (FI)</option>
+        <option value="fr">France (FR)</option>
+        <option value="de">Germany (DE)</option>
+        <option value="gr">Greece (GR)</option>
+        <option value="hk">Hong Kong (HK)</option>
+        <option value="in">India (IN)</option>
+        <option value="ir">Iran (IR)</option>
+        <option value="it">Italy (IT)</option>
+        <option value="jp">Japan (JP)</option>
+        <option value="kz">Kazakhstan (KZ)</option>
+        <option value="kg">Kyrgyzstan (KG)</option>
+        <option value="lv">Latvia (LV)</option>
+        <option value="lt">Lithuania (LT)</option>
+        <option value="my">Malaysia (MY)</option>
+        <option value="mx">Mexico (MX)</option>
+        <option value="md">Moldova (MD)</option>
+        <option value="nl">Netherlands (NL)</option>
+        <option value="no">Norway (NO)</option>
+        <option value="ph">Philippines (PH)</option>
+        <option value="pl">Poland (PL)</option>
+        <option value="pt">Portugal (PT)</option>
+        <option value="ro">Romania (RO)</option>
+        <option value="ru">Russia (RU)</option>
+        <option value="sa">Saudi Arabia (SA)</option>
+        <option value="sg">Singapore (SG)</option>
+        <option value="sk">Slovakia (SK)</option>
+        <option value="za">South Africa (ZA)</option>
+        <option value="kr">South Korea (KR)</option>
+        <option value="es">Spain (ES)</option>
+        <option value="se">Sweden (SE)</option>
+        <option value="ch">Switzerland (CH)</option>
+        <option value="tw">Taiwan (TW)</option>
+        <option value="tr">Türkiye (TR)</option>
+        <option value="th">Thailand (TH)</option>
+        <option value="ua">Ukraine (UA)</option>
+        <option value="ae">UAE (AE)</option>
+        <option value="gb">United Kingdom (GB)</option>
+        <option value="us">United States (US)</option>`;
 
       const COUNTRIES_PROXY = COUNTRIES_VPN
-        .replace(/value="all"/g, 'value="all"')
         .replace(/value="([a-z]{2})"/g, (_, c) => `value="${c.toUpperCase()}"`);
 
       const html = `<!DOCTYPE html>
