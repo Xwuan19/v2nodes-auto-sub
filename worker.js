@@ -201,9 +201,9 @@ body{
 .cs-panel.show{display:block}
 
 /* Search */
-.cs-search-wrap{padding:6px 6px 0}
+.cs-search-wrap{padding:8px 8px 0}
 .cs-search{
-  width:100%;padding:9px 13px;
+  width:100%;padding:10px 13px;
   background:#0f0f1c; /* Solid dark background */
   border:1px solid rgba(255,255,255,.12);border-radius:10px;
   color:var(--txt);font-family:inherit;font-size:14px;font-weight:600;outline:none;
@@ -213,14 +213,19 @@ body{
 .cs-search:focus{border-color:rgba(10,132,255,.5)}
 
 /* Options list */
-.cs-list{max-height:240px;overflow-y:auto;padding:6px}
+.cs-list{
+  max-height:240px;overflow-y:auto;
+  padding:8px;
+  display:flex;flex-direction:column;gap:2px;
+}
 .cs-list::-webkit-scrollbar{width:4px}
 .cs-list::-webkit-scrollbar-track{background:transparent}
 .cs-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
 
 .opt{
   display:flex;align-items:center;gap:10px;
-  padding:10px 10px;border-radius:10px;cursor:pointer;
+  padding:10px 8px; /* 8+8 = 16px perfect inset */
+  border-radius:10px;cursor:pointer;
   font-size:14px;font-weight:700;color:var(--txt2);
   transition:background .12s,color .12s;
 }
