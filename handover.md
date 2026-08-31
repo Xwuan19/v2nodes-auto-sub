@@ -86,3 +86,14 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
 
 
 
+
+## Phiên bản 11: Custom Dropdown & Apple Perfection UI
+*   **Mục tiêu:** Cải thiện select box mặc định thô kệch, hiển thị được cờ quốc gia trên mọi HĐH (đặc biệt là Windows không hỗ trợ cờ emoji), và tinh chỉnh giao diện hoàn hảo từng pixel theo chuẩn Apple.
+*   **Thay đổi:**
+    1.  Loại bỏ native <select>, tự code custom dropdown (.cs, .cs-panel) để chứa cả hình/icon và text, có tích hợp chức năng Live Search.
+    2.  Sử dụng lagcdn.com để hiển thị cờ quốc gia thay vì phụ thuộc vào font emoji của hệ điều hành.
+    3.  Tích hợp **Twemoji** để render đồng bộ các icon (🌐, 📄, 🔒, 🧦, 🚀) của giao thức Proxy trên mọi thiết bị (đổi icon lỗi 🔌 thành 🌐).
+    4.  Sửa lỗi overflow: hidden của thẻ Card cắt đứt bảng dropdown.
+    5.  Thiết lập strict Flexbox (lex: 0 0 20px) cho container của icon để chữ ở tất cả các dòng luôn gióng thẳng hàng dọc tuyệt đối.
+    6.  Tái thiết kế Padding và Gap của menu dropdown (khoảng cách 6px/8px) để tuân thủ nguyên tắc "Concentric Radii" (bo góc đồng tâm) và tạo khoảng trống (breathing room) sang trọng.
+*   **Kết quả:** Giao diện đẹp hoàn hảo không tì vết, hoạt động trơn tru như app Native.
