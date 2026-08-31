@@ -35,7 +35,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px 16px 60px;
+      padding: 24px 14px 60px;
       position: relative;
       overflow-x: hidden;
     }
@@ -46,11 +46,8 @@ export default {
       position: fixed;
       inset: 0;
       background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,245,255,0.015) 2px,
-        rgba(0,245,255,0.015) 4px
+        0deg, transparent, transparent 2px,
+        rgba(0,245,255,0.015) 2px, rgba(0,245,255,0.015) 4px
       );
       pointer-events: none;
       z-index: 9999;
@@ -71,19 +68,16 @@ export default {
 
     .container {
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       position: relative;
       z-index: 1;
     }
 
     /* ── HEADER ── */
-    .header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
+    .header { text-align: center; margin-bottom: 24px; }
 
     .header .tag {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--green);
       letter-spacing: 4px;
       margin-bottom: 8px;
@@ -92,30 +86,27 @@ export default {
 
     .header h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(20px, 5vw, 28px);
+      font-size: clamp(20px, 7vw, 32px);
       font-weight: 900;
       color: var(--cyan);
-      text-shadow:
-        0 0 10px var(--cyan),
-        0 0 30px var(--cyan),
-        0 0 60px rgba(0,245,255,0.4);
+      text-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan), 0 0 60px rgba(0,245,255,0.4);
       letter-spacing: 2px;
       line-height: 1.2;
       animation: glitch 4s infinite;
     }
 
     @keyframes glitch {
-      0%, 90%, 100% { text-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan), 0 0 60px rgba(0,245,255,0.4); transform: none; }
-      91% { transform: skewX(-2deg); text-shadow: -2px 0 var(--red), 2px 0 var(--purple); }
-      92% { transform: skewX(2deg);  text-shadow: 2px 0 var(--red), -2px 0 var(--purple); }
-      93% { transform: none;         text-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan); }
+      0%,90%,100% { text-shadow: 0 0 10px var(--cyan),0 0 30px var(--cyan),0 0 60px rgba(0,245,255,0.4); transform:none; }
+      91% { transform:skewX(-2deg); text-shadow:-2px 0 var(--red),2px 0 var(--purple); }
+      92% { transform:skewX(2deg);  text-shadow:2px 0 var(--red),-2px 0 var(--purple); }
+      93% { transform:none;         text-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan); }
     }
 
     .header .sub {
-      font-size: 12px;
+      font-size: 11px;
       color: rgba(0,245,255,0.5);
       margin-top: 8px;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
     }
 
     /* ── CARD ── */
@@ -126,36 +117,17 @@ export default {
       position: relative;
       overflow: hidden;
     }
-
-    /* Neon corner brackets */
-    .card::before, .card::after {
-      content: '';
-      position: absolute;
-      width: 20px; height: 20px;
-      z-index: 2;
-    }
-    .card::before {
-      top: -1px; left: -1px;
-      border-top: 2px solid var(--cyan);
-      border-left: 2px solid var(--cyan);
-      box-shadow: -2px -2px 8px rgba(0,245,255,0.4);
-    }
-    .card::after {
-      bottom: -1px; right: -1px;
-      border-bottom: 2px solid var(--purple);
-      border-right: 2px solid var(--purple);
-      box-shadow: 2px 2px 8px rgba(191,0,255,0.4);
-    }
+    .card::before,.card::after { content:''; position:absolute; width:20px; height:20px; z-index:2; }
+    .card::before { top:-1px; left:-1px; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); box-shadow:-2px -2px 8px rgba(0,245,255,0.4); }
+    .card::after  { bottom:-1px; right:-1px; border-bottom:2px solid var(--purple); border-right:2px solid var(--purple); box-shadow:2px 2px 8px rgba(191,0,255,0.4); }
 
     /* ── TABS ── */
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-    }
+    .tabs { display:flex; border-bottom:1px solid var(--border); }
 
     .tab-btn {
       flex: 1;
-      padding: 14px 10px;
+      padding: 0 10px;
+      height: 52px;           /* touch-friendly fixed height */
       background: transparent;
       border: none;
       color: rgba(0,245,255,0.35);
@@ -166,84 +138,57 @@ export default {
       transition: all 0.2s;
       border-bottom: 2px solid transparent;
       margin-bottom: -1px;
-      position: relative;
+      -webkit-tap-highlight-color: transparent;
     }
-
-    .tab-btn:hover {
-      color: var(--cyan);
-      background: rgba(0,245,255,0.04);
-    }
-
-    .tab-btn.active {
-      color: var(--cyan);
-      border-bottom-color: var(--cyan);
-      text-shadow: 0 0 8px var(--cyan);
-      background: rgba(0,245,255,0.06);
-    }
-
-    .tab-btn.active-purple {
-      color: var(--purple);
-      border-bottom-color: var(--purple);
-      text-shadow: 0 0 8px var(--purple);
-      background: rgba(191,0,255,0.06);
-    }
+    .tab-btn:hover { color:var(--cyan); background:rgba(0,245,255,0.04); }
+    .tab-btn.active { color:var(--cyan); border-bottom-color:var(--cyan); text-shadow:0 0 8px var(--cyan); background:rgba(0,245,255,0.06); }
+    .tab-btn.active-purple { color:var(--purple); border-bottom-color:var(--purple); text-shadow:0 0 8px var(--purple); background:rgba(191,0,255,0.06); }
 
     /* ── CONTENT ── */
-    .tab-content { display: none; padding: 24px; }
-    .tab-content.active { display: block; }
+    .tab-content { display:none; padding:20px 16px 24px; }
+    .tab-content.active { display:block; }
 
     .field-label {
       display: block;
-      font-size: 11px;
+      font-size: 10px;
       color: rgba(0,245,255,0.5);
       letter-spacing: 3px;
       text-transform: uppercase;
       margin-bottom: 8px;
       margin-top: 18px;
     }
-    .field-label:first-child { margin-top: 0; }
+    .field-label:first-child { margin-top:0; }
 
+    /* ── INPUTS
+       font-size >= 16px on mobile = no iOS auto-zoom
+    ── */
     select, input[type="text"] {
       width: 100%;
-      padding: 11px 14px;
+      padding: 15px 14px;
       background: rgba(0,245,255,0.04);
       border: 1px solid rgba(0,245,255,0.2);
       border-radius: 2px;
       color: var(--cyan);
       font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
+      font-size: 16px;     /* ← key: prevents iOS zoom */
       outline: none;
       transition: all 0.2s;
       -webkit-appearance: none;
+      appearance: none;
     }
+    select:focus,input:focus { border-color:var(--cyan); box-shadow:0 0 12px rgba(0,245,255,0.2),inset 0 0 8px rgba(0,245,255,0.04); }
+    select option { background:#0d0d20; color:var(--cyan); }
 
-    select:focus, input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 12px rgba(0,245,255,0.2), inset 0 0 8px rgba(0,245,255,0.04);
-    }
-
-    select option {
-      background: #0d0d20;
-      color: var(--cyan);
-    }
-
-    /* purple variant for proxy tab */
     .purple-mode select,
-    .purple-mode input[type="text"] {
-      border-color: rgba(191,0,255,0.2);
-      color: var(--purple);
-    }
+    .purple-mode input[type="text"] { border-color:rgba(191,0,255,0.2); color:var(--purple); }
     .purple-mode select:focus,
-    .purple-mode input:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 12px rgba(191,0,255,0.2), inset 0 0 8px rgba(191,0,255,0.04);
-    }
-    .purple-mode .field-label { color: rgba(191,0,255,0.5); }
+    .purple-mode input:focus { border-color:var(--purple); box-shadow:0 0 12px rgba(191,0,255,0.2),inset 0 0 8px rgba(191,0,255,0.04); }
+    .purple-mode .field-label { color:rgba(191,0,255,0.5); }
 
-    /* ── BUTTONS ── */
+    /* ── BUTTONS — min 50px touch target ── */
     .btn {
       width: 100%;
-      padding: 13px;
+      padding: 16px;
       margin-top: 20px;
       border: none;
       border-radius: 2px;
@@ -253,107 +198,68 @@ export default {
       letter-spacing: 2px;
       cursor: pointer;
       transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
       text-transform: uppercase;
+      min-height: 52px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
+    .btn-cyan { background:transparent; border:1px solid var(--cyan); color:var(--cyan); text-shadow:0 0 8px var(--cyan); box-shadow:0 0 12px rgba(0,245,255,0.2),inset 0 0 12px rgba(0,245,255,0.04); }
+    .btn-cyan:hover,.btn-cyan:active { background:rgba(0,245,255,0.1); box-shadow:0 0 24px rgba(0,245,255,0.4),inset 0 0 12px rgba(0,245,255,0.08); }
+    .btn-purple { background:transparent; border:1px solid var(--purple); color:var(--purple); text-shadow:0 0 8px var(--purple); box-shadow:0 0 12px rgba(191,0,255,0.2),inset 0 0 12px rgba(191,0,255,0.04); }
+    .btn-purple:hover,.btn-purple:active { background:rgba(191,0,255,0.1); box-shadow:0 0 24px rgba(191,0,255,0.4),inset 0 0 12px rgba(191,0,255,0.08); }
+    .btn-green { background:transparent; border:1px solid var(--green); color:var(--green); text-shadow:0 0 8px var(--green); box-shadow:0 0 12px rgba(0,255,65,0.2),inset 0 0 12px rgba(0,255,65,0.04); margin-top:10px; }
+    .btn-green:hover,.btn-green:active { background:rgba(0,255,65,0.1); box-shadow:0 0 24px rgba(0,255,65,0.4); }
 
-    .btn-cyan {
-      background: transparent;
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      text-shadow: 0 0 8px var(--cyan);
-      box-shadow: 0 0 12px rgba(0,245,255,0.2), inset 0 0 12px rgba(0,245,255,0.04);
-    }
-    .btn-cyan:hover {
-      background: rgba(0,245,255,0.1);
-      box-shadow: 0 0 24px rgba(0,245,255,0.4), inset 0 0 12px rgba(0,245,255,0.08);
-    }
-
-    .btn-purple {
-      background: transparent;
-      border: 1px solid var(--purple);
-      color: var(--purple);
-      text-shadow: 0 0 8px var(--purple);
-      box-shadow: 0 0 12px rgba(191,0,255,0.2), inset 0 0 12px rgba(191,0,255,0.04);
-    }
-    .btn-purple:hover {
-      background: rgba(191,0,255,0.1);
-      box-shadow: 0 0 24px rgba(191,0,255,0.4), inset 0 0 12px rgba(191,0,255,0.08);
-    }
-
-    .btn-green {
-      background: transparent;
-      border: 1px solid var(--green);
-      color: var(--green);
-      text-shadow: 0 0 8px var(--green);
-      box-shadow: 0 0 12px rgba(0,255,65,0.2), inset 0 0 12px rgba(0,255,65,0.04);
-      margin-top: 10px;
-    }
-    .btn-green:hover {
-      background: rgba(0,255,65,0.1);
-      box-shadow: 0 0 24px rgba(0,255,65,0.4);
-    }
-
-    /* ── RESULT BOX ── */
-    .result { display: none; margin-top: 20px; }
-
-    .result-label {
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: rgba(0,255,65,0.6);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    input[type="text"][readonly] {
-      color: var(--green);
-      border-color: rgba(0,255,65,0.3);
-      background: rgba(0,255,65,0.04);
-      font-size: 12px;
-    }
+    /* ── RESULT ── */
+    .result { display:none; margin-top:20px; }
+    .result-label { font-size:10px; letter-spacing:3px; color:rgba(0,255,65,0.6); text-transform:uppercase; margin-bottom:8px; }
+    input[type="text"][readonly] { color:var(--green); border-color:rgba(0,255,65,0.3); background:rgba(0,255,65,0.04); font-size:13px; overflow:hidden; text-overflow:ellipsis; }
 
     /* ── INFO BAR ── */
-    .info-bar {
-      font-size: 11px;
-      color: rgba(191,0,255,0.5);
-      letter-spacing: 1px;
-      margin-bottom: 16px;
-      padding: 8px 12px;
-      border: 1px solid rgba(191,0,255,0.15);
-      border-radius: 2px;
-      background: rgba(191,0,255,0.04);
-    }
+    .info-bar { font-size:11px; color:rgba(191,0,255,0.5); letter-spacing:1px; margin-bottom:16px; padding:8px 12px; border:1px solid rgba(191,0,255,0.15); border-radius:2px; background:rgba(191,0,255,0.04); line-height:1.6; }
 
     /* ── FOOTER ── */
-    .footer {
-      margin-top: 24px;
-      text-align: center;
-      font-size: 10px;
-      color: rgba(0,245,255,0.2);
-      letter-spacing: 3px;
+    .footer { margin-top:24px; text-align:center; font-size:10px; color:rgba(0,245,255,0.2); letter-spacing:2px; line-height:1.8; }
+
+    /* ── ANIMATIONS ── */
+    .blink { animation:blink 1s step-end infinite; }
+    @keyframes blink { 50%{opacity:0;} }
+
+    .pulse { display:inline-block; width:7px; height:7px; background:var(--green); border-radius:50%; margin-right:6px; animation:pulse 1.5s ease-in-out infinite; box-shadow:0 0 6px var(--green); vertical-align:middle; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.7);} }
+
+    /* ════════════════════════════════════════
+       TABLET / DESKTOP  ≥ 600px
+    ════════════════════════════════════════ */
+    @media (min-width: 600px) {
+      body { padding: 40px 32px 80px; }
+      .container { max-width: 640px; }
+      .header .sub { font-size:12px; letter-spacing:3px; }
+      .tab-btn { font-size:14px; letter-spacing:2px; }
+      .tab-content { padding: 28px 32px 36px; }
+      .field-label { font-size:11px; }
+
+      /* Desktop: inputs can go back to 14px — no zoom issue on desktop */
+      select, input[type="text"] { font-size:14px; padding:12px 14px; }
+
+      /* Two-column grid for proxy tab selects */
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: end;
+      }
+      .two-col .field-label { margin-top:0; }
+
+      .btn { font-size:13px; padding:15px; }
     }
 
-    /* ── BLINK cursor ── */
-    .blink {
-      animation: blink 1s step-end infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-
-    /* Pulse dot */
-    .pulse {
-      display: inline-block;
-      width: 6px; height: 6px;
-      background: var(--green);
-      border-radius: 50%;
-      margin-right: 6px;
-      animation: pulse 1.5s ease-in-out infinite;
-      box-shadow: 0 0 6px var(--green);
-      vertical-align: middle;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.4; transform: scale(0.7); }
+    /* ════════════════════════════════════════
+       LARGE DESKTOP  ≥ 900px
+    ════════════════════════════════════════ */
+    @media (min-width: 900px) {
+      .container { max-width: 720px; }
+      .header h1 { letter-spacing:5px; }
     }
   </style>
 </head>
@@ -449,73 +355,78 @@ export default {
       <div id="tab-proxy" class="tab-content purple-mode">
         <div class="info-bar">⚡ src: proxifly/free-proxy-list · refresh: every 5min · 100+ countries</div>
 
-        <span class="field-label">// TARGET COUNTRY</span>
-        <select id="proxy-country">
-          <option value="all">🌐 GLOBAL — No filter</option>
-          <option value="AL">🇦🇱 Albania (AL)</option>
-          <option value="AR">🇦🇷 Argentina (AR)</option>
-          <option value="AM">🇦🇲 Armenia (AM)</option>
-          <option value="AU">🇦🇺 Australia (AU)</option>
-          <option value="AT">🇦🇹 Austria (AT)</option>
-          <option value="BD">🇧🇩 Bangladesh (BD)</option>
-          <option value="BY">🇧🇾 Belarus (BY)</option>
-          <option value="BE">🇧🇪 Belgium (BE)</option>
-          <option value="BR">🇧🇷 Brazil (BR)</option>
-          <option value="BG">🇧🇬 Bulgaria (BG)</option>
-          <option value="CA">🇨🇦 Canada (CA)</option>
-          <option value="CN">🇨🇳 China (CN)</option>
-          <option value="CO">🇨🇴 Colombia (CO)</option>
-          <option value="CZ">🇨🇿 Czechia (CZ)</option>
-          <option value="DK">🇩🇰 Denmark (DK)</option>
-          <option value="EE">🇪🇪 Estonia (EE)</option>
-          <option value="FI">🇫🇮 Finland (FI)</option>
-          <option value="FR">🇫🇷 France (FR)</option>
-          <option value="DE">🇩🇪 Germany (DE)</option>
-          <option value="GR">🇬🇷 Greece (GR)</option>
-          <option value="HK">🇭🇰 Hong Kong (HK)</option>
-          <option value="IN">🇮🇳 India (IN)</option>
-          <option value="IR">🇮🇷 Iran (IR)</option>
-          <option value="IT">🇮🇹 Italy (IT)</option>
-          <option value="JP">🇯🇵 Japan (JP)</option>
-          <option value="KZ">🇰🇿 Kazakhstan (KZ)</option>
-          <option value="KG">🇰🇬 Kyrgyzstan (KG)</option>
-          <option value="LV">🇱🇻 Latvia (LV)</option>
-          <option value="LT">🇱🇹 Lithuania (LT)</option>
-          <option value="MY">🇲🇾 Malaysia (MY)</option>
-          <option value="MX">🇲🇽 Mexico (MX)</option>
-          <option value="MD">🇲🇩 Moldova (MD)</option>
-          <option value="NL">🇳🇱 Netherlands (NL)</option>
-          <option value="NO">🇳🇴 Norway (NO)</option>
-          <option value="PH">🇵🇭 Philippines (PH)</option>
-          <option value="PL">🇵🇱 Poland (PL)</option>
-          <option value="PT">🇵🇹 Portugal (PT)</option>
-          <option value="RO">🇷🇴 Romania (RO)</option>
-          <option value="RU">🇷🇺 Russia (RU)</option>
-          <option value="SA">🇸🇦 Saudi Arabia (SA)</option>
-          <option value="SG">🇸🇬 Singapore (SG)</option>
-          <option value="SK">🇸🇰 Slovakia (SK)</option>
-          <option value="ZA">🇿🇦 South Africa (ZA)</option>
-          <option value="KR">🇰🇷 South Korea (KR)</option>
-          <option value="ES">🇪🇸 Spain (ES)</option>
-          <option value="SE">🇸🇪 Sweden (SE)</option>
-          <option value="CH">🇨🇭 Switzerland (CH)</option>
-          <option value="TW">🇹🇼 Taiwan (TW)</option>
-          <option value="TR">🇹🇷 Türkiye (TR)</option>
-          <option value="TH">🇹🇭 Thailand (TH)</option>
-          <option value="UA">🇺🇦 Ukraine (UA)</option>
-          <option value="AE">🇦🇪 UAE (AE)</option>
-          <option value="GB">🇬🇧 United Kingdom (GB)</option>
-          <option value="US">🇺🇸 United States (US)</option>
-        </select>
-
-        <span class="field-label">// PROTOCOL</span>
-        <select id="proxy-protocol">
-          <option value="all">🔀 ALL — HTTP + HTTPS + SOCKS4 + SOCKS5</option>
-          <option value="http">🌐 HTTP</option>
-          <option value="https">🔒 HTTPS</option>
-          <option value="socks4">🧦 SOCKS4</option>
-          <option value="socks5">🧦 SOCKS5</option>
-        </select>
+        <div class="two-col">
+          <div>
+            <span class="field-label">// TARGET COUNTRY</span>
+            <select id="proxy-country">
+              <option value="all">🌐 GLOBAL — No filter</option>
+              <option value="AL">🇦🇱 Albania (AL)</option>
+              <option value="AR">🇦🇷 Argentina (AR)</option>
+              <option value="AM">🇦🇲 Armenia (AM)</option>
+              <option value="AU">🇦🇺 Australia (AU)</option>
+              <option value="AT">🇦🇹 Austria (AT)</option>
+              <option value="BD">🇧🇩 Bangladesh (BD)</option>
+              <option value="BY">🇧🇾 Belarus (BY)</option>
+              <option value="BE">🇧🇪 Belgium (BE)</option>
+              <option value="BR">🇧🇷 Brazil (BR)</option>
+              <option value="BG">🇧🇬 Bulgaria (BG)</option>
+              <option value="CA">🇨🇦 Canada (CA)</option>
+              <option value="CN">🇨🇳 China (CN)</option>
+              <option value="CO">🇨🇴 Colombia (CO)</option>
+              <option value="CZ">🇨🇿 Czechia (CZ)</option>
+              <option value="DK">🇩🇰 Denmark (DK)</option>
+              <option value="EE">🇪🇪 Estonia (EE)</option>
+              <option value="FI">🇫🇮 Finland (FI)</option>
+              <option value="FR">🇫🇷 France (FR)</option>
+              <option value="DE">🇩🇪 Germany (DE)</option>
+              <option value="GR">🇬🇷 Greece (GR)</option>
+              <option value="HK">🇭🇰 Hong Kong (HK)</option>
+              <option value="IN">🇮🇳 India (IN)</option>
+              <option value="IR">🇮🇷 Iran (IR)</option>
+              <option value="IT">🇮🇹 Italy (IT)</option>
+              <option value="JP">🇯🇵 Japan (JP)</option>
+              <option value="KZ">🇰🇿 Kazakhstan (KZ)</option>
+              <option value="KG">🇰🇬 Kyrgyzstan (KG)</option>
+              <option value="LV">🇱🇻 Latvia (LV)</option>
+              <option value="LT">🇱🇹 Lithuania (LT)</option>
+              <option value="MY">🇲🇾 Malaysia (MY)</option>
+              <option value="MX">🇲🇽 Mexico (MX)</option>
+              <option value="MD">🇲🇩 Moldova (MD)</option>
+              <option value="NL">🇳🇱 Netherlands (NL)</option>
+              <option value="NO">🇳🇴 Norway (NO)</option>
+              <option value="PH">🇵🇭 Philippines (PH)</option>
+              <option value="PL">🇵🇱 Poland (PL)</option>
+              <option value="PT">🇵🇹 Portugal (PT)</option>
+              <option value="RO">🇷🇴 Romania (RO)</option>
+              <option value="RU">🇷🇺 Russia (RU)</option>
+              <option value="SA">🇸🇦 Saudi Arabia (SA)</option>
+              <option value="SG">🇸🇬 Singapore (SG)</option>
+              <option value="SK">🇸🇰 Slovakia (SK)</option>
+              <option value="ZA">🇿🇦 South Africa (ZA)</option>
+              <option value="KR">🇰🇷 South Korea (KR)</option>
+              <option value="ES">🇪🇸 Spain (ES)</option>
+              <option value="SE">🇸🇪 Sweden (SE)</option>
+              <option value="CH">🇨🇭 Switzerland (CH)</option>
+              <option value="TW">🇹🇼 Taiwan (TW)</option>
+              <option value="TR">🇹🇷 Türkiye (TR)</option>
+              <option value="TH">🇹🇭 Thailand (TH)</option>
+              <option value="UA">🇺🇦 Ukraine (UA)</option>
+              <option value="AE">🇦🇪 UAE (AE)</option>
+              <option value="GB">🇬🇧 United Kingdom (GB)</option>
+              <option value="US">🇺🇸 United States (US)</option>
+            </select>
+          </div>
+          <div>
+            <span class="field-label">// PROTOCOL</span>
+            <select id="proxy-protocol">
+              <option value="all">🔀 ALL protocols</option>
+              <option value="http">🌐 HTTP</option>
+              <option value="https">🔒 HTTPS</option>
+              <option value="socks4">🧦 SOCKS4</option>
+              <option value="socks5">🧦 SOCKS5</option>
+            </select>
+          </div>
+        </div>
 
         <button class="btn btn-purple" onclick="generateProxy()">⚡ GENERATE PROXY FEED</button>
 

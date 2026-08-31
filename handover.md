@@ -60,4 +60,15 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     6.  Pulse indicator màu xanh lá báo hiệu hệ thống online.
 *   **Kết quả:** Giao diện hiện đại, đặc trưng, giữ nguyên toàn bộ logic backend.
 
+## Phiên bản 9: Responsive Design — Mobile + Desktop
+*   **Mục tiêu:** Đảm bảo UI hoạt động tốt trên mọi thiết bị — mobile, tablet, desktop.
+*   **Thay đổi:**
+    1.  `font-size: 16px` trên input/select khi mobile — ngăn iOS tự zoom khi focus.
+    2.  `min-height: 52px` trên tab button và nút bấm — đủ vùng chạm cho ngón tay.
+    3.  `-webkit-tap-highlight-color: transparent` — loại bỏ flash xanh khi tap trên Android.
+    4.  Media query `≥ 600px` (tablet/desktop): padding rộng hơn, font input về 14px, proxy tab dùng **2 cột grid** (country + protocol song song).
+    5.  Media query `≥ 900px` (large desktop): container rộng 720px, header letter-spacing lớn hơn.
+*   **Kết quả:** Trải nghiệm mượt mà trên cả điện thoại lẫn máy tính.
+
+
 
