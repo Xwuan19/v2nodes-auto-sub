@@ -193,9 +193,8 @@ body{
 /* Dropdown panel */
 .cs-panel{
   display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);
-  background:rgba(28,28,44,.98); /* Less transparent */
+  background:#1c1c2e; /* 100% opaque, no bleed */
   border:1px solid var(--bd);border-radius:16px;
-  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
   box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.08);
   z-index:100;overflow:hidden;
 }
@@ -205,8 +204,8 @@ body{
 .cs-search-wrap{padding:10px 10px 6px}
 .cs-search{
   width:100%;padding:9px 13px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.1);border-radius:10px;
+  background:#0f0f1c; /* Solid dark background */
+  border:1px solid rgba(255,255,255,.12);border-radius:10px;
   color:var(--txt);font-family:inherit;font-size:14px;font-weight:600;outline:none;
   -webkit-appearance:none;
 }
