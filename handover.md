@@ -49,3 +49,15 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
 *   **Thay đổi:** Viết lại `gemini.md` với cấu trúc đầy đủ gồm: tổng quan dự án, mục đích, cấu trúc file, kiến trúc hệ thống, logic từng endpoint, bảng API, ưu điểm kỹ thuật, và quy trình push code bắt buộc.
 *   **Kết quả:** `gemini.md` giờ là tài liệu "single source of truth" cho AI — đọc một lần là đủ để làm việc độc lập.
 
+## Phiên bản 8: Cyberpunk UI Redesign
+*   **Mục tiêu:** Nâng cấp giao diện Web UI từ style mặc định sang theme Cyberpunk tech.
+*   **Thay đổi:**
+    1.  Font chữ: `Orbitron` (tiêu đề) + `Share Tech Mono` (body) từ Google Fonts.
+    2.  Color palette: neon cyan `#00f5ff`, purple `#bf00ff`, green `#00ff41` trên nền đen `#050510`.
+    3.  Hiệu ứng: scanline overlay, grid background, glitch animation trên tiêu đề, neon glow trên border/button/text.
+    4.  Tab VPN Sub màu cyan, Tab Proxy List màu purple — phân biệt rõ 2 tính năng.
+    5.  Nút bấm kiểu hollow neon border thay vì solid background.
+    6.  Pulse indicator màu xanh lá báo hiệu hệ thống online.
+*   **Kết quả:** Giao diện hiện đại, đặc trưng, giữ nguyên toàn bộ logic backend.
+
+
