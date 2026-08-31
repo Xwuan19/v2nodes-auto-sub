@@ -122,16 +122,23 @@ body{
 .dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pu 2.5s ease-in-out infinite;flex-shrink:0}
 @keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-/* Card */
+/* Card — NO overflow:hidden so dropdown can escape */
 .card{
   background:var(--glass);border:1px solid var(--bd);border-radius:24px;
   backdrop-filter:blur(48px) saturate(180%);-webkit-backdrop-filter:blur(48px) saturate(180%);
   box-shadow:0 2px 0 rgba(255,255,255,.1) inset,0 32px 80px rgba(0,0,0,.5),0 0 0 .5px rgba(255,255,255,.07);
+  /* overflow:hidden removed — tabs header handles its own clipping */
+}
+
+/* Tabs header clips itself to top corners */
+.tabs{
+  display:flex;padding:6px;gap:4px;
+  background:rgba(0,0,0,.25);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  border-radius:24px 24px 0 0;
   overflow:hidden;
 }
 
-/* Tabs */
-.tabs{display:flex;padding:6px;gap:4px;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.06)}
 .tab-btn{
   flex:1;height:44px;border:none;border-radius:14px;background:transparent;
   color:var(--txt2);font-family:inherit;font-size:14px;font-weight:700;
