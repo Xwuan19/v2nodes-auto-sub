@@ -1,11 +1,43 @@
-# Logic Hoạt Động (Gemini)
+# GEMINI.md — Tài Liệu Onboarding cho AI
 
-Tài liệu này giải thích cơ chế và logic lập trình đằng sau Cloudflare Worker dùng để tự động bóc tách (scrape) cấu hình từ v2nodes và lấy proxy từ proxifly.
+> **Đọc file này trước tiên.** Đây là tài liệu dành cho AI assistant làm việc với dự án này. Sau khi đọc `gemini.md` và `handover.md`, AI sẽ nắm đủ toàn bộ context để tiếp tục phát triển mà không cần hỏi lại từ đầu.
 
-## Kiến trúc Hệ Thống
+---
+
+## 1. Tổng Quan Dự Án
+
+**Tên:** v2nodes-auto-sub
+**Repo:** https://github.com/Xwuan19/v2nodes-auto-sub
+**Deploy:** Cloudflare Workers & Pages (auto-deploy khi push lên branch `main`)
+**Mục đích:** Một Cloudflare Worker miễn phí đóng vai trò scraper/proxy, cung cấp 2 dịch vụ:
+- 🛰️ **VPN Sub** — Tự động cào cấu hình vmess/vless/trojan từ `v2nodes.com` theo quốc gia
+- 🔌 **Proxy List** — Lấy danh sách proxy HTTP/SOCKS4/SOCKS5 từ `proxifly/free-proxy-list` theo quốc gia và giao thức
+
+**Lý do tồn tại:** v2nodes liên tục thay đổi tham số `?key=` trong link sub để ngăn copy trực tiếp. Worker này bypass bằng cách scrape HTML mới nhất mỗi lần được gọi để lấy key tức thời.
+
+---
+
+## 2. Cấu Trúc File
+
+```
+v2nodes-auto-sub/
+├── worker.js        ← Source code DUY NHẤT của Cloudflare Worker (toàn bộ logic nằm đây)
+├── wrangler.toml    ← Config để Cloudflare Workers & Pages auto-deploy từ GitHub
+├── gemini.md        ← File này — tài liệu onboarding cho AI (Antigravity đọc tự động)
+├── handover.md      ← Lịch sử phát triển theo từng phiên bản (PHẢI cập nhật trước mỗi push)
+├── README.md        ← Hướng dẫn người dùng cuối
+└── autopush.bat     ← Script push nhanh (không dùng nữa, thay bằng quy trình dưới)
+```
+
+> **Quan trọng:** Toàn bộ logic nằm trong `worker.js` duy nhất — không có build step, không có dependencies, không có `node_modules`.
+
+---
+
+## 3. Kiến trúc Hệ Thống
+
 Hệ thống là một Serverless API chạy trên Cloudflare Workers. Nó đóng vai trò là một "Cầu nối" (Proxy / Scraper) giữa Client (ứng dụng VPN như Shadowrocket) và các Target Server (`v2nodes.com` và `proxifly/free-proxy-list`).
 
-### 1. Phân tuyến (Routing)
+### Phân tuyến (Routing)
 Worker lắng nghe mọi request HTTP và xử lý dựa trên `url.pathname`:
 *   **Path `/` (Giao diện Web):** Trả về HTML với **2 tab** riêng biệt:
     *   Tab 🛰️ **VPN Sub** — Dropdown 54 quốc gia, sinh link `/sub?country=xx` cho Shadowrocket/v2rayNG.
@@ -13,7 +45,9 @@ Worker lắng nghe mọi request HTTP và xử lý dựa trên `url.pathname`:
 *   **Path `/sub` (VPN Sub API):** Scrape cấu hình vmess/vless/trojan từ v2nodes theo quốc gia.
 *   **Path `/proxy` (Proxy List API):** Lấy danh sách proxy HTTP/SOCKS từ proxifly qua CDN jsDelivr.
 
-### 2. Logic Bóc Tách (`/sub`)
+---
+
+## 4. Logic Bóc Tách (`/sub`)
 Khi nhận được request (VD: `/sub?country=jp`):
 1.  **Phân tích tham số:** Trích xuất biến `countryCode`. Nếu không có, mặc định là `all`.
 2.  **Xác định mục tiêu:** Xây dựng Target URL.
@@ -26,7 +60,9 @@ Khi nhận được request (VD: `/sub?country=jp`):
 5.  **Fetch Data Cuối Cùng:** Truy cập vào URL vừa trích xuất để lấy dữ liệu thô (Raw Data) thường được lưu ở dạng Base64 chứa danh sách `vmess://`, `vless://`.
 6.  **Trả về Client:** Header được set `Content-Type: text/plain` và `Cache-Control: no-store` để ép Shadowrocket luôn phải đọc mới khi Update, không lưu cache cũ.
 
-### 3. Logic Lấy Proxy (`/proxy`)
+---
+
+## 5. Logic Lấy Proxy (`/proxy`)
 Khi nhận được request (VD: `/proxy?country=US&protocol=socks5`):
 1.  **Phân tích tham số:** Trích xuất `country` (mặc định `all`) và `protocol` (mặc định `all`). Worker tự normalize về đúng case (country → UPPER, protocol → lower).
 2.  **Xây dựng CDN URL:**
@@ -39,12 +75,29 @@ Khi nhận được request (VD: `/proxy?country=US&protocol=socks5`):
     *   Nếu `?format=json`: JSON đầy đủ gồm IP, port, protocol, anonymity, score, geolocation.
     *   Header `X-Proxy-Count` trả về số lượng proxy tìm được.
 
-## Ưu điểm của Logic này
-*   **Bypass Rotation Key (`/sub`):** v2nodes thay đổi tham số `key` liên tục để ngăn chặn việc copy link trực tiếp. Worker lách luật bằng cách luôn fetch HTML mới nhất để tìm key ngay tại thời điểm được yêu cầu.
-*   **Zero-Timeout:** `/sub` thực hiện tối đa 2 request tuần tự, `/proxy` chỉ 1 request. Cả hai đều hoàn thành dưới 1000ms, tránh kích hoạt Anti-Bot/DDoS WAF.
-*   **Self-healing:** Client app (Shadowrocket) được hưởng lợi nhờ cơ chế "Update on Open". Mỗi lần cập nhật, các node chết/cũ tự động bị xóa, nhường chỗ cho các node tươi nhất được cào về.
-*   **Proxy luôn tươi (`/proxy`):** proxifly cập nhật danh sách mỗi 5 phút qua GitHub Actions. jsDelivr CDN cache ngắn nên data luôn gần với thực tế nhất.
-*   **Auto-deploy:** Repo được kết nối với Cloudflare Workers & Pages — mỗi lần push lên GitHub branch `main`, Cloudflare tự động deploy phiên bản mới qua `wrangler.toml`.
+---
+
+## 6. Bảng API Đầy Đủ
+
+| Endpoint | Mô tả |
+|---|---|
+| `GET /` | Web UI 2 tab (trình duyệt) |
+| `GET /sub?country=jp` | VPN sub của Nhật (Base64, vmess/vless) |
+| `GET /sub?country=all` | VPN sub tổng hợp toàn cầu |
+| `GET /proxy?country=US&protocol=socks5` | SOCKS5 proxy của Mỹ (text/plain) |
+| `GET /proxy?country=all&protocol=http` | Toàn bộ HTTP proxy |
+| `GET /proxy?country=SG&format=json` | JSON đầy đủ của proxy Singapore |
+
+> **Lưu ý mã quốc gia:** `/sub` dùng chữ thường (`us`, `jp`), `/proxy` dùng chữ HOA (`US`, `JP`) — Worker tự normalize, không cần lo.
+
+---
+
+## 7. Ưu Điểm Kỹ Thuật
+*   **Bypass Rotation Key:** v2nodes thay đổi tham số `key` liên tục. Worker lách bằng cách scrape HTML mới nhất mỗi lần gọi.
+*   **Zero-Timeout:** `/sub` tối đa 2 request tuần tự, `/proxy` chỉ 1 request. Hoàn thành dưới 1000ms, tránh kích hoạt WAF.
+*   **Self-healing:** Node chết/cũ tự động bị loại mỗi lần app VPN kéo cập nhật.
+*   **Proxy luôn tươi:** proxifly cập nhật mỗi 5 phút qua GitHub Actions.
+*   **Auto-deploy:** Push lên GitHub → Cloudflare tự deploy qua `wrangler.toml`.
 
 ---
 

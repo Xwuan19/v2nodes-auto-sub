@@ -43,3 +43,9 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     2.  Cập nhật `README.md` — phản ánh Web UI 2 tab, bảng API mới có `/proxy`, hướng dẫn sử dụng theo tab.
     3.  Thêm `wrangler.toml` — cho phép Cloudflare Workers & Pages tự động deploy khi push lên GitHub.
 *   **Quy trình chuẩn từ đây về sau:** Mỗi khi thay đổi code/logic → cập nhật `handover.md` trước → rồi mới commit và push.
+
+## Phiên bản 7: Viết lại gemini.md thành tài liệu AI Onboarding
+*   **Mục tiêu:** Bất kỳ AI nào được giao làm việc với dự án này, chỉ cần đọc `gemini.md` + `handover.md` là nắm đủ toàn bộ context — không cần hỏi lại từ đầu.
+*   **Thay đổi:** Viết lại `gemini.md` với cấu trúc đầy đủ gồm: tổng quan dự án, mục đích, cấu trúc file, kiến trúc hệ thống, logic từng endpoint, bảng API, ưu điểm kỹ thuật, và quy trình push code bắt buộc.
+*   **Kết quả:** `gemini.md` giờ là tài liệu "single source of truth" cho AI — đọc một lần là đủ để làm việc độc lập.
+
