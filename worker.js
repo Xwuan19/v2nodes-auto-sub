@@ -193,7 +193,7 @@ body{
 /* Dropdown panel */
 .cs-panel{
   display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);
-  background:rgba(28,28,44,.96);
+  background:rgba(28,28,44,.98); /* Less transparent */
   border:1px solid var(--bd);border-radius:16px;
   backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
   box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.08);
@@ -226,8 +226,8 @@ body{
   transition:background .12s,color .12s;
 }
 .opt:hover{background:rgba(255,255,255,.08);color:var(--txt)}
-.opt.selected{background:rgba(10,132,255,.2);color:var(--blue)}
-.pm .opt.selected{background:rgba(94,92,230,.2);color:#a5a3ff}
+.opt.selected{background:rgba(255,255,255,.12);color:var(--txt)} /* Clean contrast */
+.pm .opt.selected{background:rgba(255,255,255,.12);color:var(--txt)}
 .opt.hidden{display:none}
 
 .flag-img{width:20px;height:15px;border-radius:2px;object-fit:cover;flex-shrink:0}
@@ -267,19 +267,6 @@ body{
 
 /* Footer */
 .ft{margin-top:28px;text-align:center;font-size:12px;font-weight:600;color:var(--txt3);line-height:2}
-
-/* Protocol select — native ok, no flags needed */
-.proto-select{
-  width:100%;padding:13px 40px 13px 14px;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:14px;
-  color:var(--txt);font-family:inherit;font-size:16px;font-weight:700;
-  outline:none;transition:border-color .18s,box-shadow .18s;
-  -webkit-appearance:none;appearance:none;cursor:pointer;min-height:50px;
-}
-.proto-wrap{position:relative}
-.proto-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--txt3);pointer-events:none;font-size:13px}
-.proto-select:focus{border-color:rgba(94,92,230,.55);box-shadow:0 0 0 3px rgba(94,92,230,.15)}
-.proto-select option{background:#1c1c2e;color:#f5f5f7}
 
 /* Responsive */
 @media(min-width:600px){
@@ -335,15 +322,7 @@ body{
         </div>
         <div>
           <span class="lbl">Protocol</span>
-          <div class="proto-wrap">
-            <select class="proto-select" id="proxy-protocol">
-              <option value="all">All protocols</option>
-              <option value="http">HTTP</option>
-              <option value="https">HTTPS</option>
-              <option value="socks4">SOCKS4</option>
-              <option value="socks5">SOCKS5</option>
-            </select>
-          </div>
+          <div class="cs" id="cs-protocol"></div>
         </div>
       </div>
       <button class="btn btn-indigo" onclick="generateProxy()">Generate Proxy Feed</button>
@@ -361,12 +340,21 @@ body{
 <script>
 // ── Country data ──
 const COUNTRIES = ${JSON.stringify(COUNTRIES)};
+const PROTOCOLS = [
+  ["all", "All protocols", false],
+  ["http", "HTTP", false],
+  ["https", "HTTPS", false],
+  ["socks4", "SOCKS4", false],
+  ["socks5", "SOCKS5", false]
+];
+
 const FLAG = code => code ? \`https://flagcdn.com/20x15/\${code}.png\` : null;
 
 // ── Build custom select ──
-function buildSelect(containerId, countries, isProxy) {
+function buildSelect(containerId, optionsList, isProxy, hideSearch = false) {
   const el = document.getElementById(containerId);
-  const opts = countries.map(([v, label, flag]) => {
+  if (!el) return;
+  const opts = optionsList.map(([v, label, flag]) => {
     const val = isProxy && v !== 'all' ? v.toUpperCase() : v;
     return { val, label, flag };
   });
@@ -375,6 +363,7 @@ function buildSelect(containerId, countries, isProxy) {
   let open = false;
 
   function flagHtml(flag, label) {
+    if (flag === false) return ''; // No icon for protocol
     if (!flag) return \`<span class="cs-glob">🌐</span>\`;
     return \`<img class="cs-flag" src="\${FLAG(flag)}" alt="\${label}" onerror="this.style.visibility='hidden'">\`;
   }
@@ -387,9 +376,9 @@ function buildSelect(containerId, countries, isProxy) {
         <span class="cs-chevron">\${open ? '▴' : '▾'}</span>
       </div>
       <div class="cs-panel \${open ? 'show' : ''}" id="panel-\${containerId}">
-        <div class="cs-search-wrap">
+        \${hideSearch ? '' : \`<div class="cs-search-wrap">
           <input class="cs-search" placeholder="Search country…" oninput="filterCS(event, '\${containerId}')" onclick="event.stopPropagation()">
-        </div>
+        </div>\`}
         <div class="cs-list">
           \${opts.map(o => \`
             <div class="opt \${o.val === current.val ? 'selected' : ''}" data-val="\${o.val}" onclick="selectCS(event, '\${containerId}', '\${o.val}')">
@@ -412,7 +401,7 @@ function buildSelect(containerId, countries, isProxy) {
   el._toggle = () => {
     open = !open;
     render();
-    if (open) {
+    if (open && !hideSearch) {
       setTimeout(() => el.querySelector('.cs-search')?.focus(), 50);
     }
   };
@@ -428,7 +417,7 @@ function buildSelect(containerId, countries, isProxy) {
 window.toggleCS = (e, id) => {
   e.stopPropagation();
   // Close all others
-  ['cs-vpn','cs-proxy'].forEach(cid => {
+  ['cs-vpn','cs-proxy','cs-protocol'].forEach(cid => {
     if (cid !== id) document.getElementById(cid)?._toggle && closeCS(cid);
   });
   document.getElementById(id)?._toggle();
@@ -452,12 +441,13 @@ window.filterCS = (e, id) => {
 
 // Close dropdowns on outside click
 document.addEventListener('click', () => {
-  ['cs-vpn','cs-proxy'].forEach(id => closeCS(id));
+  ['cs-vpn','cs-proxy','cs-protocol'].forEach(id => closeCS(id));
 });
 
 // Init
 buildSelect('cs-vpn',   COUNTRIES, false);
 buildSelect('cs-proxy', COUNTRIES, true);
+buildSelect('cs-protocol', PROTOCOLS, false, true);
 
 // ── Tab switch ──
 function switchTab(tab, btn) {
@@ -466,7 +456,7 @@ function switchTab(tab, btn) {
   document.getElementById('tab-' + tab).classList.add('on');
   btn.classList.add(tab === 'proxy' ? 'ap' : 'ac');
   // close dropdowns on tab switch
-  ['cs-vpn','cs-proxy'].forEach(id => closeCS(id));
+  ['cs-vpn','cs-proxy','cs-protocol'].forEach(id => closeCS(id));
 }
 
 // ── Generate links ──
@@ -478,7 +468,7 @@ function generateVpn() {
 
 function generateProxy() {
   const c = document.getElementById('cs-proxy')._getVal();
-  const p = document.getElementById('proxy-protocol').value;
+  const p = document.getElementById('cs-protocol')._getVal();
   document.getElementById('proxy-link').value = location.origin + '/proxy?country=' + c + '&protocol=' + p;
   document.getElementById('proxy-result').style.display = 'block';
 }
