@@ -45,3 +45,31 @@ Khi nhận được request (VD: `/proxy?country=US&protocol=socks5`):
 *   **Self-healing:** Client app (Shadowrocket) được hưởng lợi nhờ cơ chế "Update on Open". Mỗi lần cập nhật, các node chết/cũ tự động bị xóa, nhường chỗ cho các node tươi nhất được cào về.
 *   **Proxy luôn tươi (`/proxy`):** proxifly cập nhật danh sách mỗi 5 phút qua GitHub Actions. jsDelivr CDN cache ngắn nên data luôn gần với thực tế nhất.
 *   **Auto-deploy:** Repo được kết nối với Cloudflare Workers & Pages — mỗi lần push lên GitHub branch `main`, Cloudflare tự động deploy phiên bản mới qua `wrangler.toml`.
+
+---
+
+## Quy Trình Push Code (BẮT BUỘC tuân theo)
+
+> Mỗi khi sửa code hoặc thay đổi logic, PHẢI làm đủ các bước sau theo thứ tự, TRƯỚC KHI push.
+
+### Bước 1 — Cập nhật `handover.md`
+Ghi lại thay đổi vừa làm vào `handover.md` (phiên bản mới, mục tiêu, giải pháp, kết quả).
+
+### Bước 2 — Set Git Identity (làm mỗi lần, trước commit)
+```
+git config user.email "ohshjt125@gmail.com"
+git config user.name "Xwuan19"
+```
+
+### Bước 3 — Stage và Commit
+```
+git add .
+git commit -m "mô tả thay đổi"
+```
+
+### Bước 4 — Push lên GitHub (dùng đúng URL này)
+```
+git push https://Xwuan19@github.com/Xwuan19/v2nodes-auto-sub.git main
+```
+
+> **Lưu ý:** URL đã nhúng sẵn `Xwuan19@`, Windows Credential Manager trên máy này tự điền PAT — không cần nhập token thủ công. Tuyệt đối không dùng `cd` khi chạy lệnh, chỉ chỉ định `Cwd` trong tham số tool.

@@ -35,3 +35,11 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     4.  Trả về `text/plain` (1 dòng = 1 proxy `protocol://ip:port`) hoặc JSON đầy đủ nếu `?format=json`.
     5.  Nâng cấp Web UI thành **2 tab**: 🛰️ VPN Sub (v2nodes) và 🔌 Proxy List (proxifly).
 *   **Kết quả:** Worker vẫn chỉ dùng tối đa 1 subrequest cho proxy endpoint, hoàn toàn nằm trong giới hạn free plan Cloudflare Workers.
+
+## Phiên bản 6: Cập nhật Tài liệu + Thiết lập Quy trình Push
+*   **Mục tiêu:** Đồng bộ toàn bộ tài liệu (`gemini.md`, `handover.md`, `README.md`) với trạng thái thực tế của dự án, đồng thời thiết lập quy trình làm việc chuẩn để AI tuân theo trong các phiên làm việc sau.
+*   **Thay đổi:**
+    1.  Cập nhật `gemini.md` — bổ sung kiến trúc 2 tab, logic `/proxy`, ưu điểm auto-deploy, và **quy trình push code bắt buộc**.
+    2.  Cập nhật `README.md` — phản ánh Web UI 2 tab, bảng API mới có `/proxy`, hướng dẫn sử dụng theo tab.
+    3.  Thêm `wrangler.toml` — cho phép Cloudflare Workers & Pages tự động deploy khi push lên GitHub.
+*   **Quy trình chuẩn từ đây về sau:** Mỗi khi thay đổi code/logic → cập nhật `handover.md` trước → rồi mới commit và push.
