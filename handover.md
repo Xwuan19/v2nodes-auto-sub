@@ -70,5 +70,19 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     5.  Media query `≥ 900px` (large desktop): container rộng 720px, header letter-spacing lớn hơn.
 *   **Kết quả:** Trải nghiệm mượt mà trên cả điện thoại lẫn máy tính.
 
+## Phiên bản 10: Apple Liquid Glass UI Redesign
+*   **Mục tiêu:** Bỏ hoàn toàn cyberpunk, chuyển sang phong cách Apple — sạch, bold, tròn trịa, liquid glass.
+*   **Thay đổi:**
+    1.  Font: `Nunito` 900 weight — bold tròn, dễ đọc, thay thế Share Tech Mono.
+    2.  Background: 3 gradient blobs mờ (indigo, blue, green) với `filter:blur(80px)` tạo chiều sâu.
+    3.  Card: `backdrop-filter: blur(48px) saturate(180%)` — frosted glass đúng nghĩa, không còn bug ô vuông.
+    4.  Tabs: pill-style rounded, active tab dùng glass fill thay vì underline.
+    5.  Buttons: solid gradient (blue, indigo, green) với shadow nổi — không outline rỗng.
+    6.  Select: chevron custom SVG, border radius 14px, focus ring iOS style.
+    7.  Font size lớn hơn (16px mobile, 15-17px desktop) — dễ đọc trên mọi màn hình.
+    8.  Tất cả element responsive, không còn bug CSS cũ.
+*   **Kết quả:** Giao diện sạch, hiện đại, dễ dùng trên cả mobile lẫn desktop.
+
+
 
 
