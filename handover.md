@@ -24,3 +24,14 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     3.  Người dùng chọn quốc gia, web tự render link dạng \`/sub?country=sg\`.
     4.  Khi Shadowrocket gọi vào \`/sub?country=sg\`, Worker sẽ fetch đúng 1 request tới \`/country/sg/\` để chộp lấy \`key\` sub mới nhất của nước đó, tải về và trả file RAW ngay lập tức.
 *   **Kết quả:** Hệ thống chạy mượt mà dưới 1 giây, hoàn toàn "tàng hình" trước WAF chống DDoS, và người dùng có toàn quyền kiểm soát quốc gia muốn lấy thông qua UI chuyên nghiệp.
+
+## Phiên bản 5 (Current): Tích hợp Proxy List từ proxifly
+*   **Mục tiêu:** Mở rộng ngoài hệ sinh thái V2Ray — bổ sung nguồn proxy HTTP/SOCKS miễn phí cho những trường hợp cần proxy thông thường (tool scraping, trình duyệt...).
+*   **Nguồn data:** [proxifly/free-proxy-list](https://github.com/proxifly/free-proxy-list) — cập nhật mỗi 5 phút qua CDN jsDelivr, không cần API key, không rate limit.
+*   **Giải pháp:**
+    1.  Thêm endpoint `/proxy?country=XX&protocol=socks5` vào Worker.
+    2.  Worker fetch **1 request duy nhất** từ `cdn.jsdelivr.net/gh/proxifly/free-proxy-list@main/proxies/protocols/{protocol}/data.json`.
+    3.  Filter JSON theo `geolocation.country` ngay trên Worker JS — không có subrequest bổ sung.
+    4.  Trả về `text/plain` (1 dòng = 1 proxy `protocol://ip:port`) hoặc JSON đầy đủ nếu `?format=json`.
+    5.  Nâng cấp Web UI thành **2 tab**: 🛰️ VPN Sub (v2nodes) và 🔌 Proxy List (proxifly).
+*   **Kết quả:** Worker vẫn chỉ dùng tối đa 1 subrequest cho proxy endpoint, hoàn toàn nằm trong giới hạn free plan Cloudflare Workers.
