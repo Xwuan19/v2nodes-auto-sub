@@ -108,3 +108,12 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     5.  **Tối ưu Giao diện iOS Safe Area & Native Touch:** Sử dụng `env(safe-area-inset-top)` và `env(safe-area-inset-bottom)` để giao diện tràn viền hoàn hảo dưới Dynamic Island / Notch và thanh Home Bar của iPhone/iPad; tắt hiệu ứng kéo nảy (rubber-band bounce) khó chịu.
     6.  **Hướng dẫn cài đặt iOS trực quan:** Thêm nút và modal hướng dẫn 3 bước chạm (Share -> Add to Home Screen) phong cách kính mờ Liquid Glass, tự động ẩn đi khi người dùng đã mở app ở chế độ PWA.
 *   **Kết quả:** Trải nghiệm trên iPhone / iPad mượt mà, chuyên nghiệp và liền mạch như một ứng dụng App Store thực thụ.
+
+## Phiên bản 13: Cập nhật Logo 3D Cyber Security Shield & Đồng bộ Brand Identity
+*   **Mục tiêu:** Thay thế logo mặc định bằng logo thiết kế 3D chuyên nghiệp do người dùng cung cấp (Quả cầu không gian với khiên bảo mật neon, tín hiệu wifi và vị trí bản đồ), hiển thị nổi bật trên cả Web Header, PWA, Apple Touch Icon và Favicon.
+*   **Thay đổi:**
+    1.  Tạo file `icon.png` 512x512 chất lượng cao và commit trực tiếp vào repo.
+    2.  Cập nhật endpoint `/apple-touch-icon.png` và `/favicon.ico` để fetch và stream trực tiếp logo mới từ GitHub raw với cache 7 ngày.
+    3.  Thêm logo vào Header trang web (`.app-logo`) với hiệu ứng bo góc 20px, bóng đổ xanh neon liquid glass và hover zoom nhẹ.
+    4.  Đồng bộ logo mới vào Web App Manifest (`/manifest.json`) và bảng hướng dẫn cài đặt iOS (`#pwa-modal`).
+*   **Kết quả:** Bộ nhận diện thương hiệu đỉnh cao, icon màn hình chính của iPhone/iPad rực rỡ và bắt mắt đúng chất một ứng dụng VPN / Proxy đẳng cấp.

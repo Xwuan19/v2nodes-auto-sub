@@ -131,6 +131,17 @@ input, textarea, .res-url, .cs-search {
 
 /* Header */
 .hd{text-align:center;margin-bottom:32px}
+.app-logo{
+  width:78px;height:78px;border-radius:20px;
+  margin:0 auto 16px;display:block;
+  box-shadow:0 12px 32px rgba(10,132,255,.32),0 0 0 1px rgba(255,255,255,.15);
+  background:#080814;object-fit:cover;
+  transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease;
+}
+.app-logo:hover{
+  transform:scale(1.05) translateY(-2px);
+  box-shadow:0 18px 40px rgba(10,132,255,.45),0 0 0 1px rgba(255,255,255,.25);
+}
 .hd .ey{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
 .hd h1{
   font-size:clamp(28px,7vw,46px);font-weight:900;letter-spacing:-1px;line-height:1.1;
@@ -344,6 +355,7 @@ input, textarea, .res-url, .cs-search {
 @media(min-width:600px){
   body{padding:max(56px, env(safe-area-inset-top, 56px)) max(32px, env(safe-area-inset-right, 32px)) max(80px, env(safe-area-inset-bottom, 80px)) max(32px, env(safe-area-inset-left, 32px))}
   .wrap{max-width:520px}
+  .app-logo{width:88px;height:88px;border-radius:22px;margin-bottom:18px}
   .tc{padding:26px 26px 34px}
   .tab-btn{font-size:15px}
   .btn{font-size:17px}
@@ -361,6 +373,7 @@ input, textarea, .res-url, .cs-search {
 
 <div class="wrap">
   <div class="hd">
+    <img class="app-logo" src="/apple-touch-icon.png" alt="Node Matrix Logo">
     <div class="ey">Free · Open · Always Fresh</div>
     <h1>Node Matrix</h1>
     <div class="tl"><span class="dot"></span>v2nodes &amp; proxifly live feed</div>
@@ -675,7 +688,7 @@ if ('serviceWorker' in navigator) {
         icons: [
           {
             src: "/apple-touch-icon.png",
-            sizes: "256x256",
+            sizes: "512x512",
             type: "image/png",
             purpose: "any maskable"
           }
@@ -691,13 +704,27 @@ if ('serviceWorker' in navigator) {
 
     // ── APPLE TOUCH ICON / FAVICON ──
     if (url.pathname === "/apple-touch-icon.png" || url.pathname === "/apple-touch-icon-precomposed.png" || url.pathname === "/icon.png" || url.pathname === "/favicon.ico") {
-      const iconRes = await fetch("https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@latest/assets/Globe%20with%20meridians/3D/globe_with_meridians_3d.png", {
-        cf: { cacheTtl: 604800, cacheEverything: true }
-      });
-      return new Response(iconRes.body, {
+      const primaryUrl = "https://raw.githubusercontent.com/Xwuan19/v2nodes-auto-sub/main/icon.png";
+      const fallbackUrl = "https://cdn.jsdelivr.net/gh/Xwuan19/v2nodes-auto-sub@main/icon.png";
+      try {
+        const iconRes = await fetch(primaryUrl, {
+          cf: { cacheTtl: 604800, cacheEverything: true }
+        });
+        if (iconRes.ok) {
+          return new Response(iconRes.body, {
+            headers: {
+              "Content-Type": "image/png",
+              "Cache-Control": "public, max-age=604800, immutable"
+            }
+          });
+        }
+      } catch (e) {}
+
+      const fbRes = await fetch(fallbackUrl);
+      return new Response(fbRes.body, {
         headers: {
           "Content-Type": "image/png",
-          "Cache-Control": "public, max-age=604800, immutable"
+          "Cache-Control": "public, max-age=604800"
         }
       });
     }
