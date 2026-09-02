@@ -89,13 +89,13 @@ export default {
 <meta name="application-name" content="Node Matrix">
 <meta name="theme-color" content="#080814">
 <meta name="format-detection" content="telephone=no">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3">
-<link rel="apple-touch-icon" sizes="192x192" href="/apple-touch-icon.png?v=3">
-<link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png?v=3">
-<link rel="icon" type="image/png" sizes="32x32" href="/apple-touch-icon.png?v=3">
-<link rel="shortcut icon" href="/apple-touch-icon.png?v=3">
-<link rel="manifest" href="/manifest.json?v=3">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=4">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
+<link rel="apple-touch-icon" sizes="192x192" href="/apple-touch-icon.png?v=4">
+<link rel="apple-touch-icon" sizes="512x512" href="/apple-touch-icon.png?v=4">
+<link rel="icon" type="image/png" sizes="32x32" href="/apple-touch-icon.png?v=4">
+<link rel="shortcut icon" href="/apple-touch-icon.png?v=4">
+<link rel="manifest" href="/manifest.json?v=4">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
@@ -136,15 +136,15 @@ input, textarea, .res-url, .cs-search {
 /* Header */
 .hd{text-align:center;margin-bottom:32px}
 .app-logo{
-  width:82px;height:82px;
+  width:82px;height:82px;border-radius:20px;
   margin:0 auto 16px;display:block;
-  background:transparent;object-fit:contain;
-  filter:drop-shadow(0 10px 24px rgba(10,132,255,.35)) drop-shadow(0 4px 10px rgba(0,0,0,.5));
-  transition:transform .25s cubic-bezier(.16,1,.3,1),filter .25s ease;
+  object-fit:cover;overflow:hidden;
+  box-shadow:0 12px 32px rgba(10,132,255,.35),0 0 0 1px rgba(255,255,255,.18);
+  transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease;
 }
 .app-logo:hover{
   transform:scale(1.06) translateY(-2px);
-  filter:drop-shadow(0 16px 32px rgba(10,132,255,.5)) drop-shadow(0 6px 14px rgba(0,0,0,.6));
+  box-shadow:0 18px 44px rgba(10,132,255,.5),0 0 0 1px rgba(255,255,255,.3);
 }
 .hd .ey{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
 .hd h1{
@@ -377,7 +377,7 @@ input, textarea, .res-url, .cs-search {
 
 <div class="wrap">
   <div class="hd">
-    <img class="app-logo" src="/apple-touch-icon.png" alt="Node Matrix Logo">
+    <img class="app-logo" src="/apple-touch-icon.png?v=4" alt="Node Matrix Logo">
     <div class="ey">Free · Open · Always Fresh</div>
     <h1>Node Matrix</h1>
     <div class="tl"><span class="dot"></span>v2nodes &amp; proxifly live feed</div>
@@ -640,7 +640,7 @@ if ('serviceWorker' in navigator) {
 <div id="pwa-modal" class="pwa-overlay" onclick="closePwaGuide(event)">
   <div class="pwa-sheet" onclick="event.stopPropagation()">
     <div class="pwa-sheet-hd">
-      <img class="pwa-app-icon" src="/apple-touch-icon.png" alt="Node Matrix">
+      <img class="pwa-app-icon" src="/apple-touch-icon.png?v=4" alt="Node Matrix">
       <div class="pwa-sheet-title">
         <h3>Cài đặt Node Matrix (PWA)</h3>
         <p>Trải nghiệm mượt mà toàn màn hình như ứng dụng iOS</p>
@@ -691,7 +691,7 @@ if ('serviceWorker' in navigator) {
         theme_color: "#080814",
         icons: [
           {
-            src: "/apple-touch-icon.png",
+            src: "/apple-touch-icon.png?v=4",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable"
@@ -708,17 +708,17 @@ if ('serviceWorker' in navigator) {
 
     // ── APPLE TOUCH ICON / FAVICON ──
     if (url.pathname === "/apple-touch-icon.png" || url.pathname === "/apple-touch-icon-precomposed.png" || url.pathname === "/icon.png" || url.pathname === "/favicon.ico") {
-      const primaryUrl = "https://raw.githubusercontent.com/Xwuan19/v2nodes-auto-sub/main/icon.png";
+      const primaryUrl = "https://raw.githubusercontent.com/Xwuan19/v2nodes-auto-sub/main/icon.png?v=4";
       const fallbackUrl = "https://cdn.jsdelivr.net/gh/Xwuan19/v2nodes-auto-sub@main/icon.png";
       try {
         const iconRes = await fetch(primaryUrl, {
-          cf: { cacheTtl: 604800, cacheEverything: true }
+          cf: { cacheTtl: 0 }
         });
         if (iconRes.ok) {
           return new Response(iconRes.body, {
             headers: {
               "Content-Type": "image/png",
-              "Cache-Control": "public, max-age=604800, immutable"
+              "Cache-Control": "public, max-age=86400"
             }
           });
         }
@@ -728,7 +728,7 @@ if ('serviceWorker' in navigator) {
       return new Response(fbRes.body, {
         headers: {
           "Content-Type": "image/png",
-          "Cache-Control": "public, max-age=604800"
+          "Cache-Control": "public, max-age=86400"
         }
       });
     }
@@ -736,8 +736,8 @@ if ('serviceWorker' in navigator) {
     // ── SERVICE WORKER (PWA Offline / Cache Shell) ──
     if (url.pathname === "/sw.js") {
       const swCode = `
-const CACHE_NAME = 'node-matrix-v3';
-const STATIC_ASSETS = ['/', '/manifest.json?v=3', '/apple-touch-icon.png?v=3'];
+const CACHE_NAME = 'node-matrix-v4';
+const STATIC_ASSETS = ['/', '/manifest.json?v=4', '/apple-touch-icon.png?v=4'];
 
 self.addEventListener('install', e => {
   e.waitUntil(

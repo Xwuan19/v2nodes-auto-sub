@@ -125,3 +125,11 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     2.  **Cập nhật CSS `.app-logo`:** Bỏ thuộc tính `background: #080814` và `box-shadow` khung chữ nhật cũ; chuyển sang dùng `filter: drop-shadow(...)` theo đường nét thực tế của huy hiệu 3D để tạo độ nổi khối chân thực.
     3.  **Cập nhật Cache Buster:** Nâng cấp Service Worker lên `node-matrix-v3` và thêm tham số `?v=3` vào các thẻ `<link rel="apple-touch-icon">`, `<link rel="icon">` để iPhone/iPad xóa cache cũ và tải ngay icon trong suốt mới.
 *   **Kết quả:** Logo hiển thị tinh tế, không còn bất kỳ vệt đen hay viền vuông thô kệch nào xung quanh.
+
+## Phiên bản 15: Cắt phóng tràn viền (Edge-to-Edge Zoom) — Ôm sát Logo 100%
+*   **Mục tiêu:** Khắc phục triệt để lỗi viền đen vuông bao quanh logo trên cả màn hình chính iPhone/iPad và Web. Vì iOS Home Screen không hỗ trợ độ trong suốt (tự động biến pixel trong suốt thành màu đen) và ảnh gốc có viền đen dày 55px bao quanh, việc zoom tràn viền là giải pháp chuẩn mực của Apple để icon ôm sát viền bo góc iOS.
+*   **Thay đổi:**
+    1.  **Cắt phóng chuẩn xác (Edge-to-Edge Crop & Scale):** Crop vùng huy hiệu từ tọa độ `(132, 132)` đến `(892, 892)` (kích thước 760x760) và phóng to lên 512x512 tràn toàn bộ canvas. Toàn bộ 4 góc giờ là viền sáng phản quang pastel/tím neon của chính logo, triệt tiêu 100% viền đen bên ngoài.
+    2.  **Đồng bộ CSS Web & PWA Sheet:** Cập nhật `.app-logo` và `.pwa-app-icon` với `border-radius: 22px; overflow: hidden; object-fit: cover; box-shadow: ...` khớp hoàn hảo với tỉ lệ Squircle của Apple.
+    3.  **Vô hiệu hóa CDN Cache Stale (`cacheTtl: 0`):** Thiết lập `cf: { cacheTtl: 0 }` và thêm cache buster `?v=4` cho endpoint fetch raw icon trên Cloudflare Worker, nâng cấp Service Worker lên `node-matrix-v4`.
+*   **Kết quả:** Logo hiển thị đầy đặn, ôm sát viền bo tròn của iOS và web, tuyệt đối không còn bất kỳ khoảng hở hay viền đen vuông nào bên ngoài.
