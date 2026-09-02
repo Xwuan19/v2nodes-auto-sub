@@ -133,3 +133,11 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     2.  **Đồng bộ CSS Web & PWA Sheet:** Cập nhật `.app-logo` và `.pwa-app-icon` với `border-radius: 22px; overflow: hidden; object-fit: cover; box-shadow: ...` khớp hoàn hảo với tỉ lệ Squircle của Apple.
     3.  **Vô hiệu hóa CDN Cache Stale (`cacheTtl: 0`):** Thiết lập `cf: { cacheTtl: 0 }` và thêm cache buster `?v=4` cho endpoint fetch raw icon trên Cloudflare Worker, nâng cấp Service Worker lên `node-matrix-v4`.
 *   **Kết quả:** Logo hiển thị đầy đặn, ôm sát viền bo tròn của iOS và web, tuyệt đối không còn bất kỳ khoảng hở hay viền đen vuông nào bên ngoài.
+
+## Phiên bản 16: Thay Logo Cyber Shield "VPN" & Tối ưu Nền Liền Mạch
+*   **Mục tiêu:** Thay thế logo sang biểu tượng Khiên Bảo Mật Cyber VPN màu xanh Neon đậm chất công nghệ do người dùng vừa cung cấp, loại bỏ triệt để mọi viền đen vuông ngoài rìa, ôm sát viền bo góc Apple.
+*   **Thay đổi:**
+    1.  **Xử lý Seamless Background:** Crop ảnh mới từ tọa độ `(40, 40)` kích thước `944x944` đảm bảo khiên và quả địa cầu số có khoảng thở hoàn hảo; đồng thời tự động tô màu nền xanh đen navy `RGB(16, 19, 30)` tràn đều 4 góc ngoài để triệt tiêu hoàn toàn góc đen của ảnh gốc.
+    2.  **Cập nhật Cache Buster v5:** Tăng phiên bản cache lên `?v=5` cho toàn bộ các thẻ `<link>`, thẻ `<img>` và Service Worker `node-matrix-v5`.
+    3.  **Lưu đè `icon.png`:** Xuất file 512x512 chất lượng cao, đồng bộ lên Web Header, PWA, Apple Touch Icon và Favicon.
+*   **Kết quả:** Logo VPN xanh neon mới hiển thị cực ngầu, rực rỡ và liền mạch tuyệt đối trên cả Web lẫn Màn hình chính iPhone/iPad.
