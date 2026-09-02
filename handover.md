@@ -97,3 +97,14 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     5.  Thiết lập strict Flexbox (lex: 0 0 20px) cho container của icon để chữ ở tất cả các dòng luôn gióng thẳng hàng dọc tuyệt đối.
     6.  Tái thiết kế Padding và Gap của menu dropdown (khoảng cách 6px/8px) để tuân thủ nguyên tắc "Concentric Radii" (bo góc đồng tâm) và tạo khoảng trống (breathing room) sang trọng.
 *   **Kết quả:** Giao diện đẹp hoàn hảo không tì vết, hoạt động trơn tru như app Native.
+
+## Phiên bản 12: Hỗ trợ PWA cho iPhone & iPad (Apple Web App)
+*   **Mục tiêu:** Biến web thành Progressive Web App (PWA) chuẩn mực cho thiết bị iOS / iPadOS, cho phép cài đặt ra Màn hình chính (Home Screen) với icon độ phân giải cao và hoạt động toàn màn hình (fullscreen standalone) như ứng dụng iOS native.
+*   **Thay đổi:**
+    1.  **Cấu hình Meta Tags iOS:** Bổ sung `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style: black-translucent`, `apple-mobile-web-app-title` và viewport `viewport-fit=cover`.
+    2.  **Web App Manifest:** Cung cấp endpoint `/manifest.json` theo chuẩn PWA với theme màu tối, tên app, icon và chế độ standalone.
+    3.  **Apple Touch Icon & Favicon Endpoint:** Bổ sung endpoint `/apple-touch-icon.png` và `/favicon.ico` truyền tải icon 3D quả cầu Fluent 256x256 sắc nét từ CDN có caching tối ưu.
+    4.  **Service Worker (`/sw.js`):** Thêm service worker quản lý cache static shell, offline fallback và đảm bảo không cache các API subscription/proxy trực tiếp.
+    5.  **Tối ưu Giao diện iOS Safe Area & Native Touch:** Sử dụng `env(safe-area-inset-top)` và `env(safe-area-inset-bottom)` để giao diện tràn viền hoàn hảo dưới Dynamic Island / Notch và thanh Home Bar của iPhone/iPad; tắt hiệu ứng kéo nảy (rubber-band bounce) khó chịu.
+    6.  **Hướng dẫn cài đặt iOS trực quan:** Thêm nút và modal hướng dẫn 3 bước chạm (Share -> Add to Home Screen) phong cách kính mờ Liquid Glass, tự động ẩn đi khi người dùng đã mở app ở chế độ PWA.
+*   **Kết quả:** Trải nghiệm trên iPhone / iPad mượt mà, chuyên nghiệp và liền mạch như một ứng dụng App Store thực thụ.

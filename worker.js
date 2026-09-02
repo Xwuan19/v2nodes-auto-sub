@@ -79,8 +79,19 @@ export default {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <title>Node Matrix</title>
+
+<!-- Apple PWA (iPhone / iPad) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Node Matrix">
+<meta name="application-name" content="Node Matrix">
+<meta name="theme-color" content="#080814">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
@@ -95,11 +106,19 @@ export default {
 
 html{height:100%}
 body{
-  min-height:100%;background:var(--bg);color:var(--txt);
+  min-height:100vh;min-height:-webkit-fill-available;
+  background:var(--bg);color:var(--txt);
   font-family:'Nunito',-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;
   display:flex;flex-direction:column;align-items:center;
-  padding:40px 16px 72px;position:relative;overflow-x:hidden;
+  padding:max(44px, env(safe-area-inset-top, 44px)) max(16px, env(safe-area-inset-right, 16px)) max(72px, env(safe-area-inset-bottom, 72px)) max(16px, env(safe-area-inset-left, 16px));
+  position:relative;overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
+  overscroll-behavior-y:none;
+}
+input, textarea, .res-url, .cs-search {
+  user-select:text;-webkit-user-select:text;
 }
 
 /* Blobs */
@@ -265,9 +284,65 @@ body{
 /* Footer */
 .ft{margin-top:28px;text-align:center;font-size:12px;font-weight:600;color:var(--txt3);line-height:2}
 
+/* PWA Badge & Modal */
+.pwa-badge{
+  display:none;align-items:center;gap:7px;
+  margin:14px auto 0;padding:7px 16px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;color:var(--txt);font-family:inherit;font-size:12px;font-weight:700;
+  cursor:pointer;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  transition:all .18s;box-shadow:0 4px 16px rgba(0,0,0,.25);
+  -webkit-tap-highlight-color:transparent;
+}
+.pwa-badge:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.25);transform:translateY(-1px)}
+.pwa-badge svg{color:var(--blue);flex-shrink:0}
+
+.pwa-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.68);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  z-index:999;align-items:flex-end;justify-content:center;
+  padding:16px;animation:fadeIn .2s ease;
+}
+.pwa-overlay.open{display:flex}
+@media(min-width:600px){
+  .pwa-overlay{align-items:center}
+}
+.pwa-sheet{
+  width:100%;max-width:440px;background:#19192b;
+  border:1px solid rgba(255,255,255,.15);border-radius:24px;
+  padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.7);
+  animation:slideUp .25s cubic-bezier(.16,1,.3,1);
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.pwa-sheet-hd{display:flex;align-items:center;gap:14px;margin-bottom:18px;position:relative}
+.pwa-app-icon{width:46px;height:46px;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.4);background:#080814;object-fit:contain}
+.pwa-sheet-title h3{font-size:16px;font-weight:800;color:var(--txt)}
+.pwa-sheet-title p{font-size:12px;color:var(--txt2);margin-top:2px}
+.pwa-close-btn{
+  position:absolute;top:-4px;right:-4px;width:28px;height:28px;
+  background:rgba(255,255,255,.08);border:none;border-radius:50%;
+  color:var(--txt2);font-size:18px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+}
+.pwa-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.pwa-step{
+  display:flex;align-items:flex-start;gap:12px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:12px;font-size:13px;color:var(--txt2);line-height:1.45;
+}
+.step-num{
+  width:22px;height:22px;border-radius:50%;background:var(--blue);
+  color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.step-txt strong{color:var(--txt)}
+.ios-icon{vertical-align:-3px;display:inline-block;color:var(--blue)}
+.pwa-done-btn{width:100%;height:46px;font-size:15px;margin-top:0}
+
 /* Responsive */
 @media(min-width:600px){
-  body{padding:56px 32px 80px}
+  body{padding:max(56px, env(safe-area-inset-top, 56px)) max(32px, env(safe-area-inset-right, 32px)) max(80px, env(safe-area-inset-bottom, 80px)) max(32px, env(safe-area-inset-left, 32px))}
   .wrap{max-width:520px}
   .tc{padding:26px 26px 34px}
   .tab-btn{font-size:15px}
@@ -289,6 +364,10 @@ body{
     <div class="ey">Free · Open · Always Fresh</div>
     <h1>Node Matrix</h1>
     <div class="tl"><span class="dot"></span>v2nodes &amp; proxifly live feed</div>
+    <button id="pwa-install-btn" class="pwa-badge" onclick="openPwaGuide()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+      <span>Cài đặt trên iPhone / iPad</span>
+    </button>
   </div>
 
   <div class="card">
@@ -513,11 +592,159 @@ const _observer = new MutationObserver(mutations => {
 });
 _observer.observe(document.body, { childList: true, subtree: true });
 
+// ── PWA Detection & Guide ──
+function isStandalone() {
+  return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+}
+
+const pwaBtn = document.getElementById('pwa-install-btn');
+if (pwaBtn && !isStandalone()) {
+  pwaBtn.style.display = 'inline-flex';
+}
+
+function openPwaGuide() {
+  document.getElementById('pwa-modal').classList.add('open');
+}
+function closePwaGuide(e) {
+  if (e && e.target !== e.currentTarget && !e.target.classList.contains('pwa-overlay')) return;
+  document.getElementById('pwa-modal').classList.remove('open');
+}
+
+// ── Register Service Worker ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
 </script>
+
+<!-- iOS PWA Install Modal -->
+<div id="pwa-modal" class="pwa-overlay" onclick="closePwaGuide(event)">
+  <div class="pwa-sheet" onclick="event.stopPropagation()">
+    <div class="pwa-sheet-hd">
+      <img class="pwa-app-icon" src="/apple-touch-icon.png" alt="Node Matrix">
+      <div class="pwa-sheet-title">
+        <h3>Cài đặt Node Matrix (PWA)</h3>
+        <p>Trải nghiệm mượt mà toàn màn hình như ứng dụng iOS</p>
+      </div>
+      <button class="pwa-close-btn" onclick="closePwaGuide()">&times;</button>
+    </div>
+    <div class="pwa-steps">
+      <div class="pwa-step">
+        <div class="step-num">1</div>
+        <div class="step-txt">
+          Chạm vào biểu tượng <strong>Chia sẻ</strong> (Share <svg class="ios-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>) trên thanh công cụ Safari.
+        </div>
+      </div>
+      <div class="pwa-step">
+        <div class="step-num">2</div>
+        <div class="step-txt">
+          Cuộn danh sách xuống và chọn <strong>"Thêm vào MH chính"</strong> (Add to Home Screen ➕).
+        </div>
+      </div>
+      <div class="pwa-step">
+        <div class="step-num">3</div>
+        <div class="step-txt">
+          Nhấn <strong>Thêm</strong> (Add) ở góc trên bên phải màn hình để hoàn tất.
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-blue pwa-done-btn" onclick="closePwaGuide()">Đã hiểu</button>
+  </div>
+</div>
+
 </body>
 </html>`;
 
       return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+    }
+
+    // ── PWA MANIFEST ──
+    if (url.pathname === "/manifest.json" || url.pathname === "/manifest.webmanifest") {
+      const manifest = {
+        name: "Node Matrix",
+        short_name: "Node Matrix",
+        description: "v2nodes & proxifly live VPN and Proxy feeds",
+        start_url: "/",
+        scope: "/",
+        display: "standalone",
+        orientation: "portrait",
+        background_color: "#080814",
+        theme_color: "#080814",
+        icons: [
+          {
+            src: "/apple-touch-icon.png",
+            sizes: "256x256",
+            type: "image/png",
+            purpose: "any maskable"
+          }
+        ]
+      };
+      return new Response(JSON.stringify(manifest, null, 2), {
+        headers: {
+          "Content-Type": "application/manifest+json; charset=utf-8",
+          "Cache-Control": "public, max-age=86400"
+        }
+      });
+    }
+
+    // ── APPLE TOUCH ICON / FAVICON ──
+    if (url.pathname === "/apple-touch-icon.png" || url.pathname === "/apple-touch-icon-precomposed.png" || url.pathname === "/icon.png" || url.pathname === "/favicon.ico") {
+      const iconRes = await fetch("https://cdn.jsdelivr.net/gh/microsoft/fluentui-emoji@latest/assets/Globe%20with%20meridians/3D/globe_with_meridians_3d.png", {
+        cf: { cacheTtl: 604800, cacheEverything: true }
+      });
+      return new Response(iconRes.body, {
+        headers: {
+          "Content-Type": "image/png",
+          "Cache-Control": "public, max-age=604800, immutable"
+        }
+      });
+    }
+
+    // ── SERVICE WORKER (PWA Offline / Cache Shell) ──
+    if (url.pathname === "/sw.js") {
+      const swCode = `
+const CACHE_NAME = 'node-matrix-v1';
+const STATIC_ASSETS = ['/', '/manifest.json', '/apple-touch-icon.png'];
+
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS)).then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => Promise.all(
+      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+    )).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', e => {
+  const reqUrl = new URL(e.request.url);
+  if (reqUrl.pathname === '/sub' || reqUrl.pathname === '/proxy') return;
+
+  e.respondWith(
+    fetch(e.request)
+      .then(res => {
+        if (res.ok && e.request.method === 'GET' && reqUrl.origin === location.origin) {
+          const clone = res.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        }
+        return res;
+      })
+      .catch(() => caches.match(e.request))
+  );
+});
+`;
+      return new Response(swCode.trim(), {
+        headers: {
+          "Content-Type": "application/javascript; charset=utf-8",
+          "Cache-Control": "public, max-age=0, must-revalidate"
+        }
+      });
     }
 
     // ── VPN SUB ──
