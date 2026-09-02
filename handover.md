@@ -117,3 +117,11 @@ Dự án này được phát triển để tạo ra một công cụ lấy cấu
     3.  Thêm logo vào Header trang web (`.app-logo`) với hiệu ứng bo góc 20px, bóng đổ xanh neon liquid glass và hover zoom nhẹ.
     4.  Đồng bộ logo mới vào Web App Manifest (`/manifest.json`) và bảng hướng dẫn cài đặt iOS (`#pwa-modal`).
 *   **Kết quả:** Bộ nhận diện thương hiệu đỉnh cao, icon màn hình chính của iPhone/iPad rực rỡ và bắt mắt đúng chất một ứng dụng VPN / Proxy đẳng cấp.
+
+## Phiên bản 14: Khử viền đen logo (Transparent Alpha Masking & Drop Shadow)
+*   **Mục tiêu:** Loại bỏ hoàn toàn viền đen và 4 góc màu đen bao quanh huy hiệu logo 3D, giúp logo hiển thị trong suốt (floating transparent), hòa vào nền web và màn hình chính mượt mà không tì vết.
+*   **Thay đổi:**
+    1.  **Xử lý Alpha Masking bằng C# LockBits:** Quét flood-fill từ 4 góc và chuyển đổi toàn bộ vùng nền đen bên ngoài khung viền bo tròn trắng thành trong suốt tuyệt đối (`Alpha = 0`), xử lý viền chuyển tiếp (feathering) mượt mà, lưu đè vào `icon.png`.
+    2.  **Cập nhật CSS `.app-logo`:** Bỏ thuộc tính `background: #080814` và `box-shadow` khung chữ nhật cũ; chuyển sang dùng `filter: drop-shadow(...)` theo đường nét thực tế của huy hiệu 3D để tạo độ nổi khối chân thực.
+    3.  **Cập nhật Cache Buster:** Nâng cấp Service Worker lên `node-matrix-v3` và thêm tham số `?v=3` vào các thẻ `<link rel="apple-touch-icon">`, `<link rel="icon">` để iPhone/iPad xóa cache cũ và tải ngay icon trong suốt mới.
+*   **Kết quả:** Logo hiển thị tinh tế, không còn bất kỳ vệt đen hay viền vuông thô kệch nào xung quanh.
